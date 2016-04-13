@@ -10,15 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.cs160.team8.ally.dummy.DummyContent;
-import com.cs160.team8.ally.dummy.DummyContent.DummyItem;
-
-import java.util.List;
-
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of Profiles.
  * <p/>
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
+ * Activities containing this fragment MUST implement the {@link OnProfileFragmentInteractionListener}
  * interface.
  */
 public class ProfilesFragment extends Fragment {
@@ -27,7 +22,7 @@ public class ProfilesFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnProfileFragmentInteractionListener mListener;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -69,7 +64,7 @@ public class ProfilesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ProfileRecyclerViewAdapter(DummyContent.ITEMS, mListener));
+            recyclerView.setAdapter(new ProfileRecyclerViewAdapter(MainActivity.profiles, mListener));
         }
         return view;
     }
@@ -78,8 +73,8 @@ public class ProfilesFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+        if (context instanceof OnProfileFragmentInteractionListener) {
+            mListener = (OnProfileFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -102,8 +97,7 @@ public class ProfilesFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+    public interface OnProfileFragmentInteractionListener {
+        void onProfileFragmentInteraction(Profile profile);
     }
 }

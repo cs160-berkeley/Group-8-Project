@@ -1,5 +1,6 @@
 package com.cs160.team8.ally;
 
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,7 +20,22 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity
+        implements ProfilesFragment.OnProfileFragmentInteractionListener,
+        HomeFragment.OnFragmentInteractionListener, RemindersFragment.OnFragmentInteractionListener,
+        EditFragment.OnFragmentInteractionListener {
+
+    public static final List<Profile> profiles;
+    static {
+        profiles = new ArrayList<>();
+        profiles.add(new Profile("Sally M", "Caregiver", 26));
+        profiles.add(new Profile("Bobby G", "Son", 45));
+        profiles.add(new Profile("Sally G", "Daughter", 43));
+        profiles.add(new Profile("Kenny G", "Grandson", 19));
+    }
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -101,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             switch (position) {
                 case 0:
                     return HomeFragment.newInstance();
@@ -130,10 +145,18 @@ public class MainActivity extends AppCompatActivity {
                     return "People";
                 case 2:
                     return "Reminders";
-                case 1:
+                case 3:
                     return "Edit";
             }
             return null;
         }
+    }
+
+    public void onProfileFragmentInteraction(Profile profile) {
+
+    }
+
+    public void onFragmentInteraction(Uri uri){
+
     }
 }

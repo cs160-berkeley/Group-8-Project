@@ -6,22 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cs160.team8.ally.ItemFragment.OnListFragmentInteractionListener;
-import com.cs160.team8.ally.dummy.DummyContent.DummyItem;
+import com.cs160.team8.ally.ProfilesFragment.OnProfileFragmentInteractionListener;
 
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
+ * {@link RecyclerView.Adapter} that can display a {@link Profile} and makes a call to the
+ * specified {@link OnProfileFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
+    private final List<Profile> mValues;
+    private final OnProfileFragmentInteractionListener mListener;
 
-    public ProfileRecyclerViewAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+    public ProfileRecyclerViewAdapter(List<Profile> items, OnProfileFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -29,15 +28,15 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_item, parent, false);
+                .inflate(R.layout.fragment_profile, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        holder.mIdView.setText(mValues.get(position).name);
+        holder.mContentView.setText(mValues.get(position).relationship);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,7 +44,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
+                    mListener.onProfileFragmentInteraction(holder.mItem);
                 }
             }
         });
@@ -60,7 +59,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public DummyItem mItem;
+        public Profile mItem;
 
         public ViewHolder(View view) {
             super(view);
