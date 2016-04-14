@@ -1,5 +1,7 @@
 package com.cs160.team8.ally;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -28,14 +30,7 @@ public class MainActivity extends AppCompatActivity
         HomeFragment.OnFragmentInteractionListener, RemindersFragment.OnFragmentInteractionListener,
         EditFragment.OnFragmentInteractionListener {
 
-    public static final List<Profile> profiles;
-    static {
-        profiles = new ArrayList<>();
-        profiles.add(new Profile("Sally M", "Caregiver", 26));
-        profiles.add(new Profile("Bobby G", "Son", 45));
-        profiles.add(new Profile("Sally G", "Daughter", 43));
-        profiles.add(new Profile("Kenny G", "Grandson", 19));
-    }
+    public List<Profile> profiles;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -57,8 +52,13 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        Bitmap profilePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
+        profiles = new ArrayList<>();
+        profiles.add(new Profile("Sally M", "Caregiver", profilePhoto, 26));
+        profiles.add(new Profile("Bobby G", "Son", profilePhoto, 45));
+        profiles.add(new Profile("Sally G", "Daughter", profilePhoto, 43));
+        profiles.add(new Profile("Kenny G", "Grandson", profilePhoto, 19));
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -69,16 +69,6 @@ public class MainActivity extends AppCompatActivity
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
     }
 
 
