@@ -46,6 +46,13 @@ public class MainActivity extends AppCompatActivity
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private TabLayout tabLayout;
+    private int[] tabIcons = {
+            R.drawable.icon_patient_tab,
+            R.drawable.icon_profiles_tab,
+            R.drawable.icon_reminders_tab,
+            R.drawable.icon_settings_tab
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +74,16 @@ public class MainActivity extends AppCompatActivity
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
+        setupTabIcons();
+    }
+
+    private void setupTabIcons() {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
 
@@ -128,16 +143,16 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return "Home";
-                case 1:
-                    return "People";
-                case 2:
-                    return "Reminders";
-                case 3:
-                    return "Edit";
-            }
+//            switch (position) {
+//                case 0:
+//                    return "Home";
+//                case 1:
+//                    return "People";
+//                case 2:
+//                    return "Reminders";
+//                case 3:
+//                    return "Edit";
+//            }
             return null;
         }
     }
