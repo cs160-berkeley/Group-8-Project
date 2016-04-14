@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.cs160.team8.ally.ProfilesFragment.OnProfileFragmentInteractionListener;
@@ -35,8 +36,9 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).name);
-        holder.mContentView.setText(mValues.get(position).relationship);
+        holder.mPhotoView.setImageBitmap(mValues.get(position).photo);
+        holder.mNameView.setText(mValues.get(position).name);
+        holder.mRelationshipAgeView.setText(mValues.get(position).relationship);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,20 +59,22 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mNameView;
+        public final TextView mRelationshipAgeView;
+        public final ImageView mPhotoView;
         public Profile mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mPhotoView = (ImageView) view.findViewById(R.id.profile_photo);
+            mNameView = (TextView) view.findViewById(R.id.profile_name);
+            mRelationshipAgeView = (TextView) view.findViewById(R.id.profile_relationship_age);
         }
 
         @Override
-        public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+        public String toString(){
+            return super.toString() + " '" + mNameView.getText() + "'";
         }
     }
 }
