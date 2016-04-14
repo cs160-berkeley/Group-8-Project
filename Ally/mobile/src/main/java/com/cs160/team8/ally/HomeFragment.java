@@ -1,12 +1,17 @@
 package com.cs160.team8.ally;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 
 /**
@@ -51,7 +56,32 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        ImageButton button = (ImageButton) view.findViewById(R.id.patient_screen);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = getActivity().getLayoutInflater();
+                View view = inflater.inflate(R.layout.dialog_message_patient, null);
+                final EditText messageText = (EditText) view.findViewById(R.id.message_text);
+
+                builder.setView(view)
+                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Log.d("MessagePatient", messageText.getText().toString());
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Log.d("MessagePatient", "Message cancelled");
+                            }
+                        });
+
+                // Create the AlertDialog object and show it
+                builder.create().show();
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
