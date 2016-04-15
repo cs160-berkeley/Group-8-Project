@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity
             R.drawable.ic_people,
             R.drawable.ic_check_box
     };
+    private String[] tabTitles = {
+            "My Patient",
+            "Visitors",
+            "Reminders"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,15 +89,25 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onTabSelected(TabLayout.Tab tab) {
                         super.onTabSelected(tab);
-                        int tabIconColor = ContextCompat.getColor(MainActivity.this, R.color.tabActive);
-                        tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                        View view = tab.getCustomView();
+                        ImageView icon = (ImageView) view.findViewById(R.id.tab_icon);
+                        TextView title = (TextView) view.findViewById(R.id.tab_title);
+
+                        int activeColor = ContextCompat.getColor(MainActivity.this, R.color.tabActive);
+                        icon.setColorFilter(activeColor, PorterDuff.Mode.SRC_IN);
+                        title.setTextColor(activeColor);
                     }
 
                     @Override
                     public void onTabUnselected(TabLayout.Tab tab) {
                         super.onTabUnselected(tab);
-                        int tabIconColor = ContextCompat.getColor(MainActivity.this, R.color.tabInactive);
-                        tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                        View view = tab.getCustomView();
+                        TextView title = (TextView) view.findViewById(R.id.tab_title);
+
+                        ImageView icon = (ImageView) view.findViewById(R.id.tab_icon);
+                        int inactiveColor = ContextCompat.getColor(MainActivity.this, R.color.tabInactive);
+                        icon.setColorFilter(inactiveColor, PorterDuff.Mode.SRC_IN);
+                        title.setTextColor(inactiveColor);
                     }
 
                     @Override
@@ -104,9 +120,20 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupTabIcons() {
-        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        for (int i = 0; i < tabTitles.length; i += 1) {
+            View tab = LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+            TextView tabTitle = (TextView) tab.findViewById(R.id.tab_title);
+            tabTitle.setText(tabTitles[i]);
+
+            if (i == 0) {
+                int activeColor = ContextCompat.getColor(MainActivity.this, R.color.tabActive);
+                tabTitle.setTextColor(activeColor);
+            }
+
+            ImageView tabIcon = (ImageView) tab.findViewById(R.id.tab_icon);
+            tabIcon.setImageResource(tabIcons[i]);
+            tabLayout.getTabAt(i).setCustomView(tab);
+        }
     }
 
 
@@ -164,16 +191,9 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public CharSequence getPageTitle(int position) {
-//            switch (position) {
-//                case 0:
-//                    return "Home";
-//                case 1:
-//                    return "People";
-//                case 2:
-//                    return "Reminders";
-//                case 3:
-//                    return "Edit";
-//            }
+            if (position < tabTitles.length) {
+                return tabTitles[position];
+            }
             return null;
         }
     }
