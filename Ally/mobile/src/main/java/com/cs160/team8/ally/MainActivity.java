@@ -27,8 +27,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity
         implements ProfilesFragment.OnProfileFragmentInteractionListener,
-        HomeFragment.OnFragmentInteractionListener, RemindersFragment.OnFragmentInteractionListener,
-        EditFragment.OnFragmentInteractionListener {
+        HomeFragment.OnFragmentInteractionListener,
+        RemindersFragment.OnFragmentInteractionListener {
 
     public List<Profile> profiles;
 
@@ -48,10 +48,9 @@ public class MainActivity extends AppCompatActivity
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     private int[] tabIcons = {
-            R.drawable.icon_patient_tab,
-            R.drawable.icon_profiles_tab,
-            R.drawable.icon_reminders_tab,
-            R.drawable.icon_settings_tab
+            R.drawable.ic_person_inactive,
+            R.drawable.ic_people_inactive,
+            R.drawable.ic_check_box_inactive
     };
 
     @Override
@@ -83,7 +82,6 @@ public class MainActivity extends AppCompatActivity
         tabLayout.getTabAt(0).setIcon(tabIcons[0]);
         tabLayout.getTabAt(1).setIcon(tabIcons[1]);
         tabLayout.getTabAt(2).setIcon(tabIcons[2]);
-        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
     }
 
 
@@ -129,8 +127,6 @@ public class MainActivity extends AppCompatActivity
                     return ProfilesFragment.newInstance(1);
                 case 2:
                     return RemindersFragment.newInstance();
-                case 3:
-                    return EditFragment.newInstance();
             }
             return HomeFragment.newInstance();
         }
@@ -138,7 +134,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public int getCount() {
             // Show 4 total pages.
-            return 4;
+            return 3;
         }
 
         @Override
