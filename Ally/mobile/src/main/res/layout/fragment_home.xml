@@ -7,9 +7,11 @@
     <ImageButton
         android:id="@+id/patient_screen"
         android:layout_width="match_parent"
+        android:paddingTop="20px"
         android:layout_height="wrap_content"
         android:src="@drawable/patient_screen"
         android:adjustViewBounds="true"
+        android:background="@color/white"
         android:scaleType="centerCrop"
         android:layout_gravity="center" />
 
