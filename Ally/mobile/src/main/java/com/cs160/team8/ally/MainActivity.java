@@ -62,12 +62,13 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bitmap profilePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
+        Bitmap evanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
+        Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.chloe);
+        Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
         profiles = new ArrayList<>();
-        profiles.add(new Profile("Sally M", "Caregiver", profilePhoto, 26));
-        profiles.add(new Profile("Bobby G", "Son", profilePhoto, 45));
-        profiles.add(new Profile("Sally G", "Daughter", profilePhoto, 43));
-        profiles.add(new Profile("Kenny G", "Grandson", profilePhoto, 19));
+        profiles.add(new Profile("Evan Miller", "Grandson", evanPhoto, 9));
+        profiles.add(new Profile("Chloe Stanson", "Caretaker", chloePhoto, 26));
+        profiles.add(new Profile("Jeremy Miller", "Son", jeremyPhoto, 42));
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.

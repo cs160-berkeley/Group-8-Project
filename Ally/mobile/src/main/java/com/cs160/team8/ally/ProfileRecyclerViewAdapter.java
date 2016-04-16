@@ -35,10 +35,12 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        Profile visitor = mValues.get(position);
         holder.mItem = mValues.get(position);
-        holder.mPhotoView.setImageBitmap(mValues.get(position).photo);
-        holder.mNameView.setText(mValues.get(position).name);
-        holder.mRelationshipAgeView.setText(mValues.get(position).relationship);
+        holder.mPhotoView.setImageBitmap(visitor.photo);
+        holder.mNameView.setText(visitor.name);
+        String relationshipAge = visitor.relationship + ", " + visitor.age;
+        holder.mRelationshipAgeView.setText(relationshipAge);
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
