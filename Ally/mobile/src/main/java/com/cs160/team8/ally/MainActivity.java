@@ -1,5 +1,6 @@
 package com.cs160.team8.ally;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
@@ -7,17 +8,20 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -205,7 +209,38 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void onProfileFragmentInteraction(Profile profile) {
+    public void onPushProfileInteraction(final Profile profile) {
+        Log.d("Profile", profile.name);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_push_profile, null);
+
+        ImageView photo = (ImageView) view.findViewById(R.id.dialog_photo);
+        TextView name = (TextView) view.findViewById(R.id.dialog_name);
+        TextView relationshipAge = (TextView) view.findViewById(R.id.dialog_relationship_age);
+
+        photo.setImageBitmap(profile.photo);
+        name.setText(profile.name);
+        relationshipAge.setText(profile.relationship + ", " + profile.age);
+
+        builder.setView(view)
+                .setPositiveButton("Push", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("PushProfile", profile.name + "'s profile pushed to watch");
+                        // TODO: actually push the profile to the watch here
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("PushProfile", "Push cancelled");
+                    }
+                });
+
+        // Create the AlertDialog object and show it
+        builder.create().show();
+    }
+
+    public void onEditProfileInteraction(Profile profile) {
 
     }
 

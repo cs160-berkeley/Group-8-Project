@@ -51,6 +51,7 @@
     <ImageButton
         android:layout_width="35dp"
         android:layout_height="35dp"
+        android:id="@+id/push_profile"
         android:scaleType="centerCrop"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"

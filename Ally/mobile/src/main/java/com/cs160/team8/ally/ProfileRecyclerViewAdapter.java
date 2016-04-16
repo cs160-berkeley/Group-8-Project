@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,13 +43,13 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
         String relationshipAge = visitor.relationship + ", " + visitor.age;
         holder.mRelationshipAgeView.setText(relationshipAge);
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+        holder.mPushProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
                     // Notify the active callbacks interface (the activity, if the
                     // fragment is attached to one) that an item has been selected.
-                    mListener.onProfileFragmentInteraction(holder.mItem);
+                    mListener.onPushProfileInteraction(holder.mItem);
                 }
             }
         });
@@ -64,6 +65,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
         public final TextView mNameView;
         public final TextView mRelationshipAgeView;
         public final ImageView mPhotoView;
+        public final ImageButton mPushProfileButton;
         public Profile mItem;
 
         public ViewHolder(View view) {
@@ -72,6 +74,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
             mPhotoView = (ImageView) view.findViewById(R.id.profile_photo);
             mNameView = (TextView) view.findViewById(R.id.profile_name);
             mRelationshipAgeView = (TextView) view.findViewById(R.id.profile_relationship_age);
+            mPushProfileButton = (ImageButton) view.findViewById(R.id.push_profile);
         }
 
         @Override
