@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity
      */
     private ViewPager mViewPager;
     private TabLayout tabLayout;
+    private FloatingActionButton fab;
     private int[] tabIcons = {
             R.drawable.ic_person,
             R.drawable.ic_people,
@@ -78,9 +81,21 @@ public class MainActivity extends AppCompatActivity
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.hide();
+
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+            }
+        });
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -118,7 +133,6 @@ public class MainActivity extends AppCompatActivity
                 }
         );
         setupTabIcons();
-
 
         /*
 
@@ -227,6 +241,10 @@ public class MainActivity extends AppCompatActivity
                 .setPositiveButton("Push", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("PushProfile", profile.name + "'s profile pushed to watch");
+                        Snackbar.make(MainActivity.this.findViewById(android.R.id.content),
+                                profile.firstName() + "'s profile has been pushed to the patient",
+                                Snackbar.LENGTH_SHORT)
+                                .setAction("Action", null).show();
                         // TODO: actually push the profile to the watch here
                     }
                 })
