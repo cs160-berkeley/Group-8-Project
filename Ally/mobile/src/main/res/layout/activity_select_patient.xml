@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/select_patient_screen"
         android:onClick="goToMainActivity"
+        android:background="@color/white"
         android:scaleType="centerCrop"
         />
 </RelativeLayout>

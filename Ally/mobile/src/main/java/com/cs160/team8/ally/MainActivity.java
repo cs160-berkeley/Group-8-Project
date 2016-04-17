@@ -117,6 +117,8 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 if (mViewPager.getCurrentItem() == 1) {
                     Log.d("Profiles", "Create new profile");
+                    // TODO: display new-profile dialog
+                    displayNotification("New profile created");
                 } else if (mViewPager.getCurrentItem() == 2) {
                     Log.d("Reminders", "Create new reminder");
                     Intent intent = new Intent(MainActivity.this, CreateReminderActivity.class);
@@ -269,11 +271,8 @@ public class MainActivity extends AppCompatActivity
                 .setPositiveButton("Push", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         Log.d("PushProfile", profile.name + "'s profile pushed to watch");
-                        Snackbar.make(MainActivity.this.findViewById(android.R.id.content),
-                                profile.firstName() + "'s profile has been pushed to the patient",
-                                Snackbar.LENGTH_SHORT)
-                                .setAction("Action", null).show();
                         // TODO: actually push the profile to the watch here
+                        displayNotification(profile.firstName() + "'s profile has been pushed to the patient");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -284,6 +283,11 @@ public class MainActivity extends AppCompatActivity
 
         // Create the AlertDialog object and show it
         builder.create().show();
+    }
+
+    private void displayNotification(String msg) {
+        Snackbar.make(MainActivity.this.findViewById(android.R.id.content),
+                msg, Snackbar.LENGTH_SHORT).show();
     }
 
     public void onEditProfileInteraction(Profile profile) {
