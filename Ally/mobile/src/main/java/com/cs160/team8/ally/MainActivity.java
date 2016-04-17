@@ -1,5 +1,12 @@
 package com.cs160.team8.ally;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
@@ -13,6 +20,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,6 +31,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity
         implements ProfilesFragment.OnProfileFragmentInteractionListener,
@@ -123,6 +134,54 @@ public class MainActivity extends AppCompatActivity
 
 
          */
+        final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
+            @Override
+            public void onConnectionStateChange(BluetoothGatt gatt, int status,
+                                                int newState) {
+                if (newState == BluetoothProfile.STATE_CONNECTED) {
+                    Log.d("Bluetooth connected!", "(connected)");
+                    final BluetoothGatt bGatt = gatt;
+//                    bGatt.readRemoteRssi();
+//                    Log.d("Reading RSSI...", "check!");
+                    TimerTask task = new TimerTask()
+                        {
+                            @Override
+                            public void run()
+                            {
+                                bGatt.readRemoteRssi();
+                                Log.d("Reading RSSI...", "check!");
+                            }
+                        };
+                        Timer rssiTimer = new Timer();
+                        rssiTimer.schedule(task, 10000, 10000);
+                }
+            }
+
+            @Override
+            public void onReadRemoteRssi (BluetoothGatt gatt, int rssi, int status) {
+                if (status == BluetoothGatt.GATT_SUCCESS) {
+                    Log.d("onReadRemoteRssi", "Signal strength: " + rssi);
+                    if (rssi < 0) {
+                        // push notification: almost out of range!
+                    }
+                } else {
+                    Log.d("onReadRemoteRssi", "Read RSSI error... status: " + status);
+                }
+            }
+        };
+
+        BluetoothManager bManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothAdapter bAdapter = bManager.getAdapter();
+
+        BluetoothDevice watch = null;
+        Set<BluetoothDevice> pairedDevices = bAdapter.getBondedDevices();
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                watch = bAdapter.getRemoteDevice(device.getAddress());
+                Log.d("Paired watch: ", " " + watch);
+                watch.connectGatt(this, false, mGattCallback);
+            }
+        }
     }
 
     private void setupTabIcons() {
