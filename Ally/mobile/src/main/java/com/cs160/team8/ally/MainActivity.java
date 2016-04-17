@@ -1,6 +1,7 @@
 package com.cs160.team8.ally;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
@@ -10,6 +11,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
@@ -17,6 +19,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -77,6 +80,18 @@ public class MainActivity extends AppCompatActivity
         profiles.add(new Profile("Chloe Stanson", "Caretaker", chloePhoto, 26));
         profiles.add(new Profile("Jeremy Miller", "Son", jeremyPhoto, 42));
 
+        // TODO: set title to patient name
+        setTitle("Sally Miller");
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
@@ -93,6 +108,19 @@ public class MainActivity extends AppCompatActivity
                     fab.hide();
                 } else {
                     fab.show();
+                }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mViewPager.getCurrentItem() == 1) {
+                    Log.d("Profiles", "Create new profile");
+                } else if (mViewPager.getCurrentItem() == 2) {
+                    Log.d("Reminders", "Create new reminder");
+                    Intent intent = new Intent(MainActivity.this, CreateReminderActivity.class);
+                    startActivity(intent);
                 }
             }
         });
