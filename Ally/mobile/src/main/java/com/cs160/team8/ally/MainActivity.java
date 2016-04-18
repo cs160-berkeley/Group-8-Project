@@ -1,5 +1,7 @@
 package com.cs160.team8.ally;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -7,6 +9,7 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
@@ -20,6 +23,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -139,7 +143,7 @@ public class MainActivity extends AppCompatActivity
             public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                                 int newState) {
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
-                    Log.d("Bluetooth connected!", "(connected)");
+//                    Log.d("Bluetooth connected!", "(connected)");
                     final BluetoothGatt bGatt = gatt;
 //                    bGatt.readRemoteRssi();
 //                    Log.d("Reading RSSI...", "check!");
@@ -149,11 +153,11 @@ public class MainActivity extends AppCompatActivity
                             public void run()
                             {
                                 bGatt.readRemoteRssi();
-                                Log.d("Reading RSSI...", "check!");
+//                                Log.d("Reading RSSI...", "check!");
                             }
                         };
                         Timer rssiTimer = new Timer();
-                        rssiTimer.schedule(task, 10000, 10000);
+                        rssiTimer.schedule(task, 1000, 5000);
                 }
             }
 
@@ -161,8 +165,8 @@ public class MainActivity extends AppCompatActivity
             public void onReadRemoteRssi (BluetoothGatt gatt, int rssi, int status) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
                     Log.d("onReadRemoteRssi", "Signal strength: " + rssi);
-                    if (rssi < 0) {
-                        // push notification: almost out of range!
+                    if (rssi > 6 || rssi < -6) {
+                        notifyUser(rssi);
                     }
                 } else {
                     Log.d("onReadRemoteRssi", "Read RSSI error... status: " + status);
@@ -178,10 +182,24 @@ public class MainActivity extends AppCompatActivity
         if (pairedDevices.size() > 0) {
             for (BluetoothDevice device : pairedDevices) {
                 watch = bAdapter.getRemoteDevice(device.getAddress());
-                Log.d("Paired watch: ", " " + watch);
+//                Log.d("Paired watch: ", " " + watch);
                 watch.connectGatt(this, false, mGattCallback);
             }
         }
+    }
+
+    private void notifyUser(int rssi) {
+        NotificationCompat.Builder notif =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_person)
+                        .setContentTitle("Ally")
+                        .setContentText("Patient near max range: " + rssi);
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(42, notif.build());
     }
 
     private void setupTabIcons() {
