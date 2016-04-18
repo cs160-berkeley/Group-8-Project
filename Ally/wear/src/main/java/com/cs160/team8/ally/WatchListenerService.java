@@ -29,18 +29,18 @@ public class WatchListenerService extends WearableListenerService {
             String[] parties = parts[1].split(":");
             String location = parts[2];
 
-            Intent intent = new Intent(this, DisplaySenatorActivity.class );
-
-            //you need to add this flag since you're starting a new activity from a service
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-            Bundle extras = new Bundle();
-            extras.putStringArray(DisplaySenatorActivity.NAMES_KEY, names);
-            extras.putStringArray(DisplaySenatorActivity.PARTIES_KEY, parties);
-            extras.putString(DisplaySenatorActivity.LOCATION_KEY, location);
-
-            intent.putExtras(extras);
-            startActivity(intent);
+//            Intent intent = new Intent(this, DisplaySenatorActivity.class );
+//
+//            //you need to add this flag since you're starting a new activity from a service
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//            Bundle extras = new Bundle();
+//            extras.putStringArray(DisplaySenatorActivity.NAMES_KEY, names);
+//            extras.putStringArray(DisplaySenatorActivity.PARTIES_KEY, parties);
+//            extras.putString(DisplaySenatorActivity.LOCATION_KEY, location);
+//
+//            intent.putExtras(extras);
+//            startActivity(intent);
         } else {
             super.onMessageReceived( messageEvent );
         }

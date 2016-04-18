@@ -27,6 +27,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -118,7 +119,7 @@ public class MainActivity extends AppCompatActivity
                 if (mViewPager.getCurrentItem() == 1) {
                     Log.d("Profiles", "Create new profile");
                     // TODO: display new-profile dialog
-                    displayNotification("New profile created");
+                    openNewProfileDialog();
                 } else if (mViewPager.getCurrentItem() == 2) {
                     Log.d("Reminders", "Create new reminder");
                     Intent intent = new Intent(MainActivity.this, CreateReminderActivity.class);
@@ -172,6 +173,49 @@ public class MainActivity extends AppCompatActivity
 
 
          */
+    }
+
+    private void openNewProfileDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_new_visitor_profile, null);
+
+        ImageButton photo = (ImageButton) view.findViewById(R.id.dialog_new_photo);
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SelectProfilePhotoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        final EditText nameEditText = (EditText) view.findViewById(R.id.dialog_new_name);
+        final EditText relationshipEditText = (EditText) view.findViewById(R.id.dialog_new_relationship);
+        final EditText ageEditText = (EditText) view.findViewById(R.id.dialog_new_age);
+
+        builder.setView(view)
+                .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String name = nameEditText.getText().toString();
+                        String relationship = relationshipEditText.getText().toString();
+                        int age = Integer.parseInt(ageEditText.getText().toString());
+
+                        Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
+
+                        Profile profile = new Profile(name, relationship, photo, age);
+                        Log.d("Profile", profile.name + "'s profile has been created");
+                        // TODO: actually push the profile to the watch here
+                        displayNotification(profile.firstName() + "'s profile has been created");
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("Profile", "Create profile cancelled");
+                    }
+                });
+
+        // Create the AlertDialog object and show it
+        builder.create().show();
     }
 
     private void setupTabIcons() {

@@ -11,24 +11,27 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".SelectPatientActivity">
-        </activity>
+            android:parentActivityName=".SelectPatientActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service android:name=".PhoneToWatchService" />
         <!-- Listeners are special services that need to be declared like below, as BIND_LISTENER -->
         <activity
             android:name=".CreateReminderActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".SelectPatientActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            >
+        <activity
+            android:name=".SelectPatientActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".SelectProfilePhotoActivity"
+            android:parentActivityName=".MainActivity"
+            />
     </application>
 
 </manifest>
