@@ -101,6 +101,8 @@ public class ProfilesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnProfileFragmentInteractionListener {
-        void onProfileFragmentInteraction(Profile profile);
+        void onPushProfileInteraction(Profile profile);
+
+        void onEditProfileInteraction(Profile profile);
     }
 }

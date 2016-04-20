@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:background="@drawable/profile_bottom_border"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
+    android:gravity="center_vertical"
     android:layout_height="wrap_content" >
 
     <ImageView
@@ -12,25 +18,44 @@
         android:layout_alignParentTop="true"
         />
 
-    <TextView
-        android:id="@+id/profile_name"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:text="Evan Miller"
+        android:id="@+id/profile_text"
         android:layout_toEndOf="@+id/profile_photo"
         android:layout_alignParentTop="true"
-        />
+        android:layout_marginStart="20dp"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/profile_relationship_age"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/text_margin"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:text="Grandson, 9"
-        android:layout_below="@+id/profile_name"
-        android:layout_toEndOf="@+id/profile_photo"
+        <TextView
+            android:id="@+id/profile_name"
+            android:layout_width="wrap_content"
+            android:textSize="23sp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:text="Evan Miller"
+            />
+
+        <TextView
+            android:id="@+id/profile_relationship_age"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:text="Grandson, 9"
+            />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:id="@+id/push_profile"
+        android:scaleType="centerCrop"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true"
+        android:background="@color/white"
+        android:src="@drawable/ic_send"
         />
 </RelativeLayout>

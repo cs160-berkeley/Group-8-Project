@@ -19,6 +19,7 @@ public class WatchListenerService extends WearableListenerService {
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
+<<<<<<< HEAD
 //        Log.d("T", "in WatchListenerService, got: " + messageEvent.getPath());
 //
 //        if (messageEvent.getPath().equalsIgnoreCase(SENATOR_INFO)) {
@@ -29,6 +30,18 @@ public class WatchListenerService extends WearableListenerService {
 //            String[] parties = parts[1].split(":");
 //            String location = parts[2];
 //
+=======
+        Log.d("T", "in WatchListenerService, got: " + messageEvent.getPath());
+
+        if (messageEvent.getPath().equalsIgnoreCase(SENATOR_INFO)) {
+            String information = new String(messageEvent.getData(), StandardCharsets.UTF_8);
+            Log.d("T", "in WatchListenerService, message received: " + information);
+            String[] parts = information.split("\\+");
+            String[] names = parts[0].split(":");
+            String[] parties = parts[1].split(":");
+            String location = parts[2];
+
+>>>>>>> c42ec943c111d6408abb140d6e43459bbdd884f9
 //            Intent intent = new Intent(this, DisplaySenatorActivity.class );
 //
 //            //you need to add this flag since you're starting a new activity from a service
@@ -41,9 +54,15 @@ public class WatchListenerService extends WearableListenerService {
 //
 //            intent.putExtras(extras);
 //            startActivity(intent);
+<<<<<<< HEAD
 //        } else {
 //            super.onMessageReceived( messageEvent );
 //        }
+=======
+        } else {
+            super.onMessageReceived( messageEvent );
+        }
+>>>>>>> c42ec943c111d6408abb140d6e43459bbdd884f9
 
     }
 }

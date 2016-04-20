@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:paddingStart="25dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:background="@drawable/push_dialog_bottom_border"
+        android:text="New Visitor"
+        android:textColor="@color/colorPrimary"
+        />
+
+    <ImageButton
+        android:id="@+id/dialog_new_photo"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:background="@color/white"
+        android:layout_gravity="center"
+        android:src="@drawable/profile_picture"
+        />
+
+    <EditText
+        android:id="@+id/dialog_new_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingBottom="20dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:hint="Name"
+        />
+
+    <EditText
+        android:id="@+id/dialog_new_relationship"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingBottom="20dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:hint="Relationship to Patient"
+        />
+
+    <EditText
+        android:id="@+id/dialog_new_age"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="20dp"
+        android:paddingBottom="20dp"
+        android:textAppearance="?attr/textAppearanceListItem"
+        android:inputType="number"
+        android:hint="Age"
+        />
+
+</LinearLayout>

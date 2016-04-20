@@ -17,4 +17,8 @@ public class Profile {
         this.photo = photo;
         this.age = age;
     }
+
+    public String firstName() {
+        return name.split(" ")[0];
+    }
 }

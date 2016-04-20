@@ -6,4 +6,6 @@
     <color name="white">#FDFDFD</color>
     <color name="tabInactive">#8B8B8B</color>
     <color name="tabActive">#9DCB6B</color>
+
+    <color name="black_overlay">#66000000</color>
 </resources>

@@ -1,5 +1,6 @@
 package com.cs160.team8.ally;
 
+<<<<<<< HEAD
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
@@ -9,27 +10,40 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
+=======
+import android.content.DialogInterface;
+>>>>>>> c42ec943c111d6408abb140d6e43459bbdd884f9
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+<<<<<<< HEAD
 import android.support.v4.app.NotificationCompat;
+=======
+import android.support.v7.widget.Toolbar;
+>>>>>>> c42ec943c111d6408abb140d6e43459bbdd884f9
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -61,6 +75,7 @@ public class MainActivity extends AppCompatActivity
      */
     private ViewPager mViewPager;
     private TabLayout tabLayout;
+    private FloatingActionButton fab;
     private int[] tabIcons = {
             R.drawable.ic_person,
             R.drawable.ic_people,
@@ -77,20 +92,60 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bitmap profilePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
+        Bitmap evanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
+        Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.chloe);
+        Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
         profiles = new ArrayList<>();
-        profiles.add(new Profile("Sally M", "Caregiver", profilePhoto, 26));
-        profiles.add(new Profile("Bobby G", "Son", profilePhoto, 45));
-        profiles.add(new Profile("Sally G", "Daughter", profilePhoto, 43));
-        profiles.add(new Profile("Kenny G", "Grandson", profilePhoto, 19));
+        profiles.add(new Profile("Evan Miller", "Grandson", evanPhoto, 9));
+        profiles.add(new Profile("Chloe Stanson", "Caretaker", chloePhoto, 26));
+        profiles.add(new Profile("Jeremy Miller", "Son", jeremyPhoto, 42));
+
+        // TODO: set title to patient name
+        setTitle("Sally Miller");
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
+        // Get a support ActionBar corresponding to this toolbar
+        ActionBar ab = getSupportActionBar();
+
+        // Enable the Up button
+        ab.setDisplayHomeAsUpEnabled(true);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.hide();
+
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    fab.hide();
+                } else {
+                    fab.show();
+                }
+            }
+        });
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mViewPager.getCurrentItem() == 1) {
+                    Log.d("Profiles", "Create new profile");
+                    // TODO: display new-profile dialog
+                    openNewProfileDialog();
+                } else if (mViewPager.getCurrentItem() == 2) {
+                    Log.d("Reminders", "Create new reminder");
+                    Intent intent = new Intent(MainActivity.this, CreateReminderActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
@@ -128,7 +183,6 @@ public class MainActivity extends AppCompatActivity
                 }
         );
         setupTabIcons();
-
 
         /*
 
@@ -200,6 +254,49 @@ public class MainActivity extends AppCompatActivity
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(42, notif.build());
+    }
+
+    private void openNewProfileDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_new_visitor_profile, null);
+
+        ImageButton photo = (ImageButton) view.findViewById(R.id.dialog_new_photo);
+        photo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SelectProfilePhotoActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        final EditText nameEditText = (EditText) view.findViewById(R.id.dialog_new_name);
+        final EditText relationshipEditText = (EditText) view.findViewById(R.id.dialog_new_relationship);
+        final EditText ageEditText = (EditText) view.findViewById(R.id.dialog_new_age);
+
+        builder.setView(view)
+                .setPositiveButton("Create", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        String name = nameEditText.getText().toString();
+                        String relationship = relationshipEditText.getText().toString();
+                        int age = Integer.parseInt(ageEditText.getText().toString());
+
+                        Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
+
+                        Profile profile = new Profile(name, relationship, photo, age);
+                        Log.d("Profile", profile.name + "'s profile has been created");
+                        // TODO: actually push the profile to the watch here
+                        displayNotification(profile.firstName() + "'s profile has been created");
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("Profile", "Create profile cancelled");
+                    }
+                });
+
+        // Create the AlertDialog object and show it
+        builder.create().show();
     }
 
     private void setupTabIcons() {
@@ -281,7 +378,44 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void onProfileFragmentInteraction(Profile profile) {
+    public void onPushProfileInteraction(final Profile profile) {
+        Log.d("Profile", profile.name);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_push_profile, null);
+
+        ImageView photo = (ImageView) view.findViewById(R.id.dialog_photo);
+        TextView name = (TextView) view.findViewById(R.id.dialog_name);
+        TextView relationshipAge = (TextView) view.findViewById(R.id.dialog_relationship_age);
+
+        photo.setImageBitmap(profile.photo);
+        name.setText(profile.name);
+        relationshipAge.setText(profile.relationship + ", " + profile.age);
+
+        builder.setView(view)
+                .setPositiveButton("Push", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("PushProfile", profile.name + "'s profile pushed to watch");
+                        // TODO: actually push the profile to the watch here
+                        displayNotification(profile.firstName() + "'s profile has been pushed to the patient");
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("PushProfile", "Push cancelled");
+                    }
+                });
+
+        // Create the AlertDialog object and show it
+        builder.create().show();
+    }
+
+    private void displayNotification(String msg) {
+        Snackbar.make(MainActivity.this.findViewById(android.R.id.content),
+                msg, Snackbar.LENGTH_SHORT).show();
+    }
+
+    public void onEditProfileInteraction(Profile profile) {
 
     }
 
