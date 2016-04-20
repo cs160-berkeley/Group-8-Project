@@ -164,12 +164,12 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onReadRemoteRssi (BluetoothGatt gatt, int rssi, int status) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
-                    Log.d("onReadRemoteRssi", "Signal strength: " + rssi);
-                    if (rssi > 6 || rssi < -6) {
+//                    Log.d("onReadRemoteRssi", "Signal strength: " + rssi);
+//                    if (rssi > 6 || rssi < -6) {
                         notifyUser(rssi);
-                    }
+//                    }
                 } else {
-                    Log.d("onReadRemoteRssi", "Read RSSI error... status: " + status);
+//                    Log.d("onReadRemoteRssi", "Read RSSI error... status: " + status);
                 }
             }
         };
@@ -193,7 +193,7 @@ public class MainActivity extends AppCompatActivity
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_person)
                         .setContentTitle("Ally")
-                        .setContentText("Patient near max range: " + rssi);
+                        .setContentText("Patient distance: " + rssi);
 
         Intent resultIntent = new Intent(this, MainActivity.class);
 
