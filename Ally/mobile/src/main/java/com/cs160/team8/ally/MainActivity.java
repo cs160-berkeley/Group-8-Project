@@ -76,6 +76,8 @@ public class MainActivity extends AppCompatActivity
         Bitmap evanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
         Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.chloe);
         Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
+
+
         profiles = new ArrayList<>();
         profiles.add(new Profile("Evan Miller", "Grandson", evanPhoto, 9));
         profiles.add(new Profile("Chloe Stanson", "Caretaker", chloePhoto, 26));
@@ -193,6 +195,8 @@ public class MainActivity extends AppCompatActivity
         final EditText relationshipEditText = (EditText) view.findViewById(R.id.dialog_new_relationship);
         final EditText ageEditText = (EditText) view.findViewById(R.id.dialog_new_age);
 
+
+
         builder.setView(view)
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -203,9 +207,11 @@ public class MainActivity extends AppCompatActivity
                         Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
 
                         Profile profile = new Profile(name, relationship, photo, age);
-                        Log.d("Profile", profile.name + "'s profile has been created");
+
+                        ProfileInfo pinfo = profile.getProfileInfo();
+                        Log.d("Profile", pinfo.getName() + "'s profile has been created");
                         // TODO: actually push the profile to the watch here
-                        displayNotification(profile.firstName() + "'s profile has been created");
+                        displayNotification(pinfo.getName() + "'s profile has been created");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -298,7 +304,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onPushProfileInteraction(final Profile profile) {
-        Log.d("Profile", profile.name);
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_push_profile, null);
@@ -307,16 +312,25 @@ public class MainActivity extends AppCompatActivity
         TextView name = (TextView) view.findViewById(R.id.dialog_name);
         TextView relationshipAge = (TextView) view.findViewById(R.id.dialog_relationship_age);
 
-        photo.setImageBitmap(profile.photo);
-        name.setText(profile.name);
-        relationshipAge.setText(profile.relationship + ", " + profile.age);
+        photo.setImageBitmap(profile.getPhoto());
+
+        final ProfileInfo pinfo = profile.getProfileInfo();
+        Log.d("Profile", pinfo.getName());
+
+        name.setText(pinfo.getName());
+        relationshipAge.setText(pinfo.getRelationship() + ", " + pinfo.getAge());
 
         builder.setView(view)
                 .setPositiveButton("Push", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.d("PushProfile", profile.name + "'s profile pushed to watch");
+                        Log.d("PushProfile", pinfo.getName() + "'s profile pushed to watch");
+
                         // TODO: actually push the profile to the watch here
-                        displayNotification(profile.firstName() + "'s profile has been pushed to the patient");
+                        //Thanks for the descriptive comments, Joel!
+
+                        new PhoneToWatchService().sendProfile(getApplicationContext(),profile);
+
+                        displayNotification(pinfo.getName() + "'s profile has been pushed to the patient");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
