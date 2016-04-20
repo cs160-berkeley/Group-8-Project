@@ -1,6 +1,7 @@
 package com.cs160.team8.ally;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.ImageButton;
@@ -10,6 +11,7 @@ public class ReminderActivity extends Activity {
 
     private TextView mTextView;
 
+    private Typeface main_type;
     private TextView reminderTitle;
     private ImageButton reminderButton;
 
@@ -25,8 +27,11 @@ public class ReminderActivity extends Activity {
             }
         });
 
+        main_type = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
         reminderTitle = (TextView) findViewById(R.id.reminder_title);
-        reminderTitle.setText("Take one heart pill");
         reminderButton = (ImageButton) findViewById(R.id.reminder_button);
+
+        reminderTitle.setText("Take one heart pill");
+        reminderTitle.setTypeface(main_type);
     }
 }
