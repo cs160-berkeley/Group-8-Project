@@ -1,6 +1,7 @@
 package com.cs160.team8.ally;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
@@ -20,5 +21,7 @@ public class MainActivity extends Activity {
                 mTextView = (TextView) stub.findViewById(R.id.text);
             }
         });
+        Typeface main_type = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
+        text
     }
 }
