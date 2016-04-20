@@ -8,4 +8,5 @@
     <color name="tabActive">#9DCB6B</color>
 
     <color name="black_overlay">#66000000</color>
+    <color name="primaryText">#D1000000</color>
 </resources>
