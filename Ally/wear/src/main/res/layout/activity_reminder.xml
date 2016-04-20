@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.wearable.view.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/watch_view_stub"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:rectLayout="@layout/rect_activity_reminder"
+    app:roundLayout="@layout/round_activity_reminder"
+    tools:context="com.cs160.team8.ally.ReminderActivity"
+    tools:deviceIds="wear"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAlignment="center">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            >
+
+            <TextView
+                android:id="@+id/reminder_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:text="Take one heart pill"
+                android:textSize="18dp"
+                android:textColor="@color/primaryText"
+                />
+
+            <ImageButton
+                android:id="@+id/reminder_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:layout_below="@+id/reminder_title"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_done_white_48dp"
+                android:gravity="center"
+                android:background="@drawable/rounded_button"
+                />
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</android.support.wearable.view.BoxInsetLayout>

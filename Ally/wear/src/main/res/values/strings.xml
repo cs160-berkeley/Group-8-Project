@@ -2,5 +2,7 @@
     <string name="app_name">Ally</string>
     <string name="hello_round">Hello Round World!</string>
     <string name="hello_square">Hello Square World!</string>
+    <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_activity_reminder">ReminderActivity</string>
     <string name="title_activity_press_help">PressHelp</string>
 </resources>
