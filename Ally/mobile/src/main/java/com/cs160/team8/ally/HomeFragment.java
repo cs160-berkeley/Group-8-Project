@@ -2,6 +2,7 @@ package com.cs160.team8.ally;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -57,31 +58,43 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        ImageButton button = (ImageButton) view.findViewById(R.id.patient_screen);
+        ImageButton button = (ImageButton) view.findViewById(R.id.message_patient_screen);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = getActivity().getLayoutInflater();
-                View view = inflater.inflate(R.layout.dialog_message_patient, null);
-                final EditText messageText = (EditText) view.findViewById(R.id.message_text);
+                messagePatient();
+            }
+        });
 
-                builder.setView(view)
-                        .setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Log.d("MessagePatient", messageText.getText().toString());
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                Log.d("MessagePatient", "Message cancelled");
-                            }
-                        });
-
-                // Create the AlertDialog object and show it
-                builder.create().show();
+        ImageButton mapButton = (ImageButton) view.findViewById(R.id.patient_location_screen);
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PatientLocationActivity.class);
+                startActivity(intent);
             }
         });
         return view;
+    }
+
+    private void messagePatient() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        View view = inflater.inflate(R.layout.dialog_message_patient, null);
+        final EditText messageText = (EditText) view.findViewById(R.id.message_text);
+
+        builder.setView(view)
+                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("MessagePatient", messageText.getText().toString());
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("MessagePatient", "Message cancelled");
+                    }
+                });
+
+        // Create the AlertDialog object and show it
+        builder.create().show();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

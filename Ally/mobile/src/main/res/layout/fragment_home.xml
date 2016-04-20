@@ -1,18 +1,30 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".HomeFragment">
 
     <ImageButton
-        android:id="@+id/patient_screen"
+        android:id="@+id/message_patient_screen"
         android:layout_width="match_parent"
         android:paddingTop="20px"
         android:layout_height="wrap_content"
-        android:src="@drawable/patient_screen"
+        android:src="@drawable/message_patient_screen"
         android:adjustViewBounds="true"
         android:background="@color/white"
         android:scaleType="centerCrop"
         android:layout_gravity="center" />
 
-</FrameLayout>
+    <ImageButton
+        android:id="@+id/patient_location_screen"
+        android:layout_width="match_parent"
+        android:paddingTop="20px"
+        android:layout_height="wrap_content"
+        android:src="@drawable/patient_location_screen"
+        android:adjustViewBounds="true"
+        android:background="@color/white"
+        android:scaleType="centerCrop"
+        android:layout_gravity="center" />
+
+</LinearLayout>
