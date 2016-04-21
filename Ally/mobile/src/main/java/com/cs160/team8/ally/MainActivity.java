@@ -1,7 +1,5 @@
 package com.cs160.team8.ally;
 
-<<<<<<< HEAD
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -10,9 +8,7 @@ import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.BluetoothProfile;
 import android.content.Context;
-=======
 import android.content.DialogInterface;
->>>>>>> c42ec943c111d6408abb140d6e43459bbdd884f9
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -31,11 +27,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-<<<<<<< HEAD
 import android.support.v4.app.NotificationCompat;
-=======
 import android.support.v7.widget.Toolbar;
->>>>>>> c42ec943c111d6408abb140d6e43459bbdd884f9
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -137,7 +130,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 if (mViewPager.getCurrentItem() == 1) {
                     Log.d("Profiles", "Create new profile");
-                    // TODO: display new-profile dialog
                     openNewProfileDialog();
                 } else if (mViewPager.getCurrentItem() == 2) {
                     Log.d("Reminders", "Create new reminder");
@@ -315,7 +307,6 @@ public class MainActivity extends AppCompatActivity
             tabLayout.getTabAt(i).setCustomView(tab);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.cs160.team8.ally.SelectProfilePhotoActivity">
+    tools:context="com.cs160.team8.ally.PatientLocationActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
@@ -16,21 +16,21 @@
         >
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/select_profile_photo_toolbar"
+            android:id="@+id/patient_location_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:elevation="4dp"
-            android:background="#000"
+            android:background="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             />
     </android.support.design.widget.AppBarLayout>
 
-    <ImageView
+    <ImageButton
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/select_profile_photo_screen"
+        android:onClick="messagePatient"
+        android:src="@drawable/patient_full_map_screen"
         />
-
 </LinearLayout>
