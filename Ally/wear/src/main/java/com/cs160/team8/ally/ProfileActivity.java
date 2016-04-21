@@ -20,15 +20,15 @@ public class ProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
-        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
-            @Override
-            public void onLayoutInflated(WatchViewStub stub) {
-                mTextView = (TextView) stub.findViewById(R.id.text);
-            }
-        });
+//        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
+//        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
+//            @Override
+//            public void onLayoutInflated(WatchViewStub stub) {
+//                mTextView = (TextView) stub.findViewById(R.id.text);
+//            }
+//        });
 
-        main_type = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
+        main_type = Typeface.createFromAsset(getAssets(), "Lato2OFL/Lato-Bold.ttf");
         profilePhoto = (ImageView) findViewById(R.id.profile_photo);
         profileName = (TextView) findViewById(R.id.profile_name);
         profileInfo = (TextView) findViewById(R.id.profile_info);

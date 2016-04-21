@@ -19,15 +19,15 @@ public class ReminderActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminder);
-        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
-        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
-            @Override
-            public void onLayoutInflated(WatchViewStub stub) {
-                mTextView = (TextView) stub.findViewById(R.id.text);
-            }
-        });
+//        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
+//        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
+//            @Override
+//            public void onLayoutInflated(WatchViewStub stub) {
+//                mTextView = (TextView) stub.findViewById(R.id.text);
+//            }
+//        });
 
-        main_type = Typeface.createFromAsset(getAssets(), "Lato-Bold.ttf");
+        main_type = Typeface.createFromAsset(getAssets(), "Lato2OFL/Lato-Bold.ttf");
         reminderTitle = (TextView) findViewById(R.id.reminder_title);
         reminderButton = (ImageButton) findViewById(R.id.reminder_button);
 
