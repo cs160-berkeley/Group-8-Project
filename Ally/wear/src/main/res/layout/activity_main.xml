@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.wearable.view.WatchViewStub xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.wearable.view.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/watch_view_stub"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:rectLayout="@layout/rect_activity_main"
     app:roundLayout="@layout/round_activity_main"
     tools:context="com.cs160.team8.ally.MainActivity"
-    tools:deviceIds="wear"></android.support.wearable.view.WatchViewStub>
+    tools:deviceIds="wear"
+    android:background="@color/white">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ally"
+            android:textColor="@color/colorPrimary"
+            android:id="@+id/title"
+            android:textSize="48sp"
+            android:layout_alignBottom="@+id/logo"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="50dp" />
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ally_gray_logo"
+        android:id="@+id/logo"
+        android:layout_marginBottom="49dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+</android.support.wearable.view.BoxInsetLayout>

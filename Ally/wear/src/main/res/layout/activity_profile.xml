@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.wearable.view.BoxInsetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/watch_view_stub"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:rectLayout="@layout/rect_activity_profile"
+    app:roundLayout="@layout/round_activity_profile"
+    tools:context="com.cs160.team8.ally.ProfileActivity"
+    tools:deviceIds="wear"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:id="@+id/profile_photo"
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/jeremy_miller"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="@color/white"
+            android:layout_alignParentBottom="true"
+            >
+
+            <View
+                android:id="@+id/green_line"
+                android:layout_width="match_parent"
+                android:layout_alignParentTop="true"
+                android:layout_height="1.5dp"
+                android:background="@color/colorPrimary"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:paddingLeft="45dp"
+                android:paddingTop="6dp">
+
+                <TextView
+                    android:id="@+id/profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="15sp"
+                    android:textColor="@color/primaryText"
+                    android:text="Jeremy Miller"/>
+
+                <TextView
+                    android:id="@+id/profile_info"
+                    android:layout_below="@+id/profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:textSize="15sp"
+                    android:textColor="@color/primaryText"
+                    android:text="Son, 42"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+</android.support.wearable.view.BoxInsetLayout>
