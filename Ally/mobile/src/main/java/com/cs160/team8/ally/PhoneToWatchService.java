@@ -21,6 +21,20 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Date;
 
+
+
+/*
+
+
+    Used to send messages / data objects to the watch.
+
+    Usage for pushing a profile:
+
+            new PhoneToWatchService().sendProfile(<PROFILE OBJECT>);
+
+
+ */
+
 public class PhoneToWatchService extends WearableListenerService implements GoogleApiClient.ConnectionCallbacks {
 
     private static GoogleApiClient mApiClient;
