@@ -135,7 +135,7 @@ public class PhoneToWatchService extends WearableListenerService implements Goog
 
     public byte[] toBytes (Bitmap bm) {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        bm.compress(Bitmap.CompressFormat.JPEG, 40, stream);
         return stream.toByteArray();
     }
 

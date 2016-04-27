@@ -179,8 +179,6 @@ public class WatchToPhoneService extends WearableListenerService implements Goog
                     DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
 
                     byte[] profilePic = dataMapItem.getDataMap().getByteArray(IMAGE_KEY);
-                    System.out.println ("Is asset data empty? "+ (profilePic == null));
-
 
                     byte[] serialized = dataMapItem.getDataMap().getByteArray(WatchToPhoneService.PROFILE_KEY);
                     ProfileInfo profileInfo = (ProfileInfo) SerializationUtils.deserialize(serialized);
@@ -190,6 +188,8 @@ public class WatchToPhoneService extends WearableListenerService implements Goog
 
                          */
                     Intent intent = new Intent(this, ProfileActivity.class);
+
+                    System.out.println("Watch received image!");
                     intent.putExtra("PROFILE_INFO", profileInfo);
                     intent.putExtra("PROFILE_PICTURE", profilePic);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

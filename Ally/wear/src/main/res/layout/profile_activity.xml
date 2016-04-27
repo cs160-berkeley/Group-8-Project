@@ -20,13 +20,13 @@
         android:text = "NAME"/>
     <de.hdodenhof.circleimageview.CircleImageView
         android:id = "@+id/profile_picture"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_below="@+id/profile_name"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
         app:civ_border_width="2dp"
-        app:civ_border_color="#90EE90"
+        app:civ_border_color="#64e264"
         android:layout_marginBottom="20dp"/>
 
 
