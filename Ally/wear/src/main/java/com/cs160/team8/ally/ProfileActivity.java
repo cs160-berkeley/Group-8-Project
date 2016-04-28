@@ -1,9 +1,10 @@
 package com.cs160.team8.ally;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.wearable.view.WatchViewStub;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -32,12 +33,46 @@ public class ProfileActivity extends Activity {
         profilePhoto = (ImageView) findViewById(R.id.profile_photo);
         profileName = (TextView) findViewById(R.id.profile_name);
         profileInfo = (TextView) findViewById(R.id.profile_info);
-        profileName.setTypeface(main_type);
-        profileInfo.setTypeface(main_type);
+//        profileName.setTypeface(main_type);
+//        profileInfo.setTypeface(main_type);
+//
+//        profilePhoto.setImageResource(R.drawable.jeremy_miller);
+//        profileName.setText("Jeremy Miller");
+//        profileInfo.setText("Son, 42");
+        loadProfilePicture();
+        loadProfileName();
 
-        profilePhoto.setImageResource(R.drawable.jeremy_miller);
-        profileName.setText("Jeremy Miller");
-        profileInfo.setText("Son, 42");
+        /*
+            Forced profile loading: proof of work for prog 03
+            pro
+         */
 
     }
+
+    private void loadProfilePicture(){
+
+        byte[] data = getIntent().getByteArrayExtra("PROFILE_PICTURE");
+
+        if (data != null) {
+
+            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+            if (bmp != null) {
+
+                this.profilePhoto.setImageBitmap(bmp);
+            }
+        }
+        else {
+            System.err.println("IMAGE IS NULL");
+        }
+    }
+
+    private void loadProfileName() {
+
+        ProfileInfo profInfo = (ProfileInfo) getIntent().getSerializableExtra("PROFILE_INFO");
+        this.profileName.setText(profInfo.getName());
+
+
+    }
+
 }
