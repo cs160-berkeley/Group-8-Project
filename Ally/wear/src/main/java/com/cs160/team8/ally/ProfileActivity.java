@@ -17,10 +17,14 @@ public class ProfileActivity extends Activity {
     private TextView profileName;
     private TextView profileInfo;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
+    /**
+     * Created by KunalPatel on 4/17/16.
+     */
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_profile);
 //        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
 //        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
 //            @Override
@@ -29,50 +33,53 @@ public class ProfileActivity extends Activity {
 //            }
 //        });
 
-        main_type = Typeface.createFromAsset(getAssets(), "Lato2OFL/Lato-Bold.ttf");
-        profilePhoto = (ImageView) findViewById(R.id.profile_photo);
-        profileName = (TextView) findViewById(R.id.profile_name);
-        profileInfo = (TextView) findViewById(R.id.profile_info);
+            main_type = Typeface.createFromAsset(getAssets(), "Lato2OFL/Lato-Bold.ttf");
+            profilePhoto = (ImageView) findViewById(R.id.profile_photo);
+            profileName = (TextView) findViewById(R.id.profile_name);
+            profileInfo = (TextView) findViewById(R.id.profile_info);
 //        profileName.setTypeface(main_type);
 //        profileInfo.setTypeface(main_type);
 //
 //        profilePhoto.setImageResource(R.drawable.jeremy_miller);
 //        profileName.setText("Jeremy Miller");
 //        profileInfo.setText("Son, 42");
-        loadProfilePicture();
-        loadProfileName();
+            setContentView(R.layout.profile_activity);
+
+            loadProfilePicture();
+            loadProfileName();
 
         /*
             Forced profile loading: proof of work for prog 03
             pro
          */
 
-    }
+        }
 
-    private void loadProfilePicture(){
+        private void loadProfilePicture() {
 
-        byte[] data = getIntent().getByteArrayExtra("PROFILE_PICTURE");
+            byte[] data = getIntent().getByteArrayExtra("PROFILE_PICTURE");
 
-        if (data != null) {
+            if (data != null) {
 
-            Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
+                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
 
-            if (bmp != null) {
+                if (bmp != null) {
 
-                this.profilePhoto.setImageBitmap(bmp);
+
+                    this.profilePhoto.setImageBitmap(bmp);
+
+                }
+            } else {
+                System.err.println("IMAGE IS NULL");
             }
         }
-        else {
-            System.err.println("IMAGE IS NULL");
+
+        private void loadProfileName() {
+
+            ProfileInfo profInfo = (ProfileInfo) getIntent().getSerializableExtra("PROFILE_INFO");
+            this.profileName.setText(profInfo.getName());
+
+
         }
     }
 
-    private void loadProfileName() {
-
-        ProfileInfo profInfo = (ProfileInfo) getIntent().getSerializableExtra("PROFILE_INFO");
-        this.profileName.setText(profInfo.getName());
-
-
-    }
-
-}

@@ -4,13 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cs160.team8.ally.MainActivity"
-    tools:deviceIds="wear_round">
+    tools:deviceIds="wear_round"
+    android:background="#FFFFFF"
+    >
 
     <TextView
         android:id="@+id/text"
+        android:textSize="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/hello_round" />
+        android:textColor="#64e264"
+        android:text="Ally Test" />
 </RelativeLayout>

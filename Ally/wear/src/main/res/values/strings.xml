@@ -5,4 +5,7 @@
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_activity_reminder">ReminderActivity</string>
     <string name="title_activity_press_help">PressHelp</string>
+
+    <string name="google_app_id">default-demo-app-54a28</string>
+>>>>>>> profile_pushing_2
 </resources>

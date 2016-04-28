@@ -1,13 +1,5 @@
 package com.cs160.team8.ally;
 
-import android.app.NotificationManager;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothGatt;
-import android.bluetooth.BluetoothGattCallback;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothProfile;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,7 +19,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -42,9 +33,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity
         implements ProfilesFragment.OnProfileFragmentInteractionListener,
@@ -88,6 +76,8 @@ public class MainActivity extends AppCompatActivity
         Bitmap evanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
         Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.chloe);
         Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
+
+
         profiles = new ArrayList<>();
         profiles.add(new Profile("Evan Miller", "Grandson", evanPhoto, 9));
         profiles.add(new Profile("Chloe Stanson", "Caretaker", chloePhoto, 26));
@@ -130,6 +120,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View v) {
                 if (mViewPager.getCurrentItem() == 1) {
                     Log.d("Profiles", "Create new profile");
+                    // TODO: display new-profile dialog
                     openNewProfileDialog();
                 } else if (mViewPager.getCurrentItem() == 2) {
                     Log.d("Reminders", "Create new reminder");
@@ -184,68 +175,6 @@ public class MainActivity extends AppCompatActivity
 
 
          */
-        final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
-            @Override
-            public void onConnectionStateChange(BluetoothGatt gatt, int status,
-                                                int newState) {
-                if (newState == BluetoothProfile.STATE_CONNECTED) {
-//                    Log.d("Bluetooth connected!", "(connected)");
-                    final BluetoothGatt bGatt = gatt;
-//                    bGatt.readRemoteRssi();
-//                    Log.d("Reading RSSI...", "check!");
-                    TimerTask task = new TimerTask()
-                        {
-                            @Override
-                            public void run()
-                            {
-                                bGatt.readRemoteRssi();
-//                                Log.d("Reading RSSI...", "check!");
-                            }
-                        };
-                        Timer rssiTimer = new Timer();
-                        rssiTimer.schedule(task, 1000, 5000);
-                }
-            }
-
-            @Override
-            public void onReadRemoteRssi (BluetoothGatt gatt, int rssi, int status) {
-                if (status == BluetoothGatt.GATT_SUCCESS) {
-//                    Log.d("onReadRemoteRssi", "Signal strength: " + rssi);
-//                    if (rssi > 6 || rssi < -6) {
-                        notifyUser(rssi);
-//                    }
-                } else {
-//                    Log.d("onReadRemoteRssi", "Read RSSI error... status: " + status);
-                }
-            }
-        };
-
-        BluetoothManager bManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
-        BluetoothAdapter bAdapter = bManager.getAdapter();
-
-        BluetoothDevice watch = null;
-        Set<BluetoothDevice> pairedDevices = bAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                watch = bAdapter.getRemoteDevice(device.getAddress());
-//                Log.d("Paired watch: ", " " + watch);
-                watch.connectGatt(this, false, mGattCallback);
-            }
-        }
-    }
-
-    private void notifyUser(int rssi) {
-        NotificationCompat.Builder notif =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_person)
-                        .setContentTitle("Ally")
-                        .setContentText("Patient distance: " + rssi);
-
-        Intent resultIntent = new Intent(this, MainActivity.class);
-
-
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(42, notif.build());
     }
 
     private void openNewProfileDialog() {
@@ -266,6 +195,8 @@ public class MainActivity extends AppCompatActivity
         final EditText relationshipEditText = (EditText) view.findViewById(R.id.dialog_new_relationship);
         final EditText ageEditText = (EditText) view.findViewById(R.id.dialog_new_age);
 
+
+
         builder.setView(view)
                 .setPositiveButton("Create", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -276,9 +207,11 @@ public class MainActivity extends AppCompatActivity
                         Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
 
                         Profile profile = new Profile(name, relationship, photo, age);
-                        Log.d("Profile", profile.getProfileInfo().getName() + "'s profile has been created");
+
+                        ProfileInfo pinfo = profile.getProfileInfo();
+                        Log.d("Profile", pinfo.getName() + "'s profile has been created");
                         // TODO: actually push the profile to the watch here
-                        displayNotification(profile.getProfileInfo().getName() + "'s profile has been created");
+                        displayNotification(pinfo.getName() + "'s profile has been created");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -307,6 +240,7 @@ public class MainActivity extends AppCompatActivity
             tabLayout.getTabAt(i).setCustomView(tab);
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -370,7 +304,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onPushProfileInteraction(final Profile profile) {
-        Log.d("Profile", profile.getProfileInfo().getName());
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_push_profile, null);
@@ -379,16 +312,25 @@ public class MainActivity extends AppCompatActivity
         TextView name = (TextView) view.findViewById(R.id.dialog_name);
         TextView relationshipAge = (TextView) view.findViewById(R.id.dialog_relationship_age);
 
-        photo.setImageBitmap(profile.photo);
-        name.setText(profile.getProfileInfo().getName());
-        relationshipAge.setText(profile.getProfileInfo().getRelationship() + ", " + profile.age);
+        photo.setImageBitmap(profile.getPhoto());
+
+        final ProfileInfo pinfo = profile.getProfileInfo();
+        Log.d("Profile", pinfo.getName());
+
+        name.setText(pinfo.getName());
+        relationshipAge.setText(pinfo.getRelationship() + ", " + pinfo.getAge());
 
         builder.setView(view)
                 .setPositiveButton("Push", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.d("PushProfile", profile.getProfileInfo().getName() + "'s profile pushed to watch");
+                        Log.d("PushProfile", pinfo.getName() + "'s profile pushed to watch");
+
                         // TODO: actually push the profile to the watch here
-                        displayNotification(profile.getProfileInfo().getName() + "'s profile has been pushed to the patient");
+                        //Thanks for the descriptive comments, Joel!
+
+                        new PhoneToWatchService().sendProfile(getApplicationContext(),profile);
+
+                        displayNotification(pinfo.getName() + "'s profile has been pushed to the patient");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
