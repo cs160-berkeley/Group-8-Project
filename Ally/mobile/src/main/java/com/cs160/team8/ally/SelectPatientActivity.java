@@ -25,6 +25,7 @@ public class SelectPatientActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_patient);
 
+        Patient.deleteAll(Patient.class);
         long numPatients = Patient.count(Patient.class);
         if (numPatients == 0) {
             seedDatabase();
@@ -69,6 +70,7 @@ public class SelectPatientActivity extends AppCompatActivity {
     }
 
     private void seedDatabase() {
+        // Create Patients
         Bitmap sallyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
         Patient sally = new Patient("Sally Miller", sallyPhoto, 20);
         sally.save();
@@ -77,7 +79,21 @@ public class SelectPatientActivity extends AppCompatActivity {
         Patient john = new Patient("John Smith", johnPhoto, 20);
         john.save();
 
-        Log.d("SelectPatient", "Num patients: " + String.valueOf(Patient.count(Patient.class)));
+        // Create Visitors
+        Bitmap evanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
+        Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.chloe);
+        Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
+
+
+        Visitor evan = new Visitor("Evan Miller", sally, "Grandson", evanPhoto, 9);
+        Visitor chloe = new Visitor("Chloe Stanson", sally, "Caretaker", chloePhoto, 26);
+        Visitor jeremy = new Visitor("Jeremy Miller", sally, "Son", jeremyPhoto, 42);
+
+        evan.save();
+        chloe.save();
+        jeremy.save();
+
+        // TODO: create reminders for Sally here
     }
 
     public void connectToPatient(View view) {

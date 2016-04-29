@@ -91,10 +91,6 @@ public class MainActivity extends AppCompatActivity
         currentPatient = Patient.findById(Patient.class, extras.getLong(SelectPatientActivity.PATIENT_ID));
         setTitle(currentPatient.name);
 
-        Bitmap evanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
-        Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.chloe);
-        Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
-
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
@@ -275,9 +271,9 @@ public class MainActivity extends AppCompatActivity
                         Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
 
                         Visitor visitor = new Visitor(name, currentPatient, relationship, photo, age);
-                        Log.d("Visitor", visitor.name + "'s visitor has been created");
+                        Log.d("Visitor", visitor.name + "'s profile has been created");
                         // TODO: actually push the visitor to the watch here
-                        displayNotification(visitor.firstName() + "'s visitor has been created");
+                        displayNotification(visitor.firstName() + "'s profile has been created");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -385,9 +381,9 @@ public class MainActivity extends AppCompatActivity
         builder.setView(view)
                 .setPositiveButton("Push", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.d("PushProfile", visitor.name + "'s visitor pushed to watch");
+                        Log.d("PushProfile", visitor.name + "'s profile pushed to watch");
                         // TODO: actually push the visitor to the watch here
-                        displayNotification(visitor.firstName() + "'s visitor has been pushed to the patient");
+                        displayNotification(visitor.firstName() + "'s profile has been pushed to the patient");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
