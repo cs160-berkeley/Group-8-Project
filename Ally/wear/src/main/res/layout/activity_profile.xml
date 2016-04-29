@@ -23,7 +23,6 @@
             android:layout_alignParentTop="true"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
-            android:src="@drawable/jeremy_miller"
             />
 
         <RelativeLayout

@@ -1,6 +1,7 @@
 package com.cs160.team8.ally;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +14,16 @@ import com.cs160.team8.ally.ProfilesFragment.OnProfileFragmentInteractionListene
 import java.util.List;
 
 /**
- * {@link RecyclerView.Adapter} that can display a {@link Profile} and makes a call to the
+ * {@link RecyclerView.Adapter} that can display a {@link Visitor} and makes a call to the
  * specified {@link OnProfileFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecyclerViewAdapter.ViewHolder> {
 
-    private final List<Profile> mValues;
+    private final List<Visitor> mValues;
     private final OnProfileFragmentInteractionListener mListener;
 
-    public ProfileRecyclerViewAdapter(List<Profile> items, OnProfileFragmentInteractionListener listener) {
+    public ProfileRecyclerViewAdapter(List<Visitor> items, OnProfileFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }
@@ -36,11 +37,13 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Profile visitor = mValues.get(position);
+        Visitor visitor = mValues.get(position);
+
         holder.mItem = mValues.get(position);
-        holder.mPhotoView.setImageBitmap(visitor.photo);
-        holder.mNameView.setText(visitor.getProfileInfo().getName());
-        String relationshipAge = visitor.getProfileInfo().getRelationship() + ", " + visitor.getProfileInfo().getAge();
+        holder.mPhotoView.setImageBitmap(visitor.getImage());
+        holder.mNameView.setText(visitor.name);
+
+        String relationshipAge = visitor.relationship + ", " + visitor.age;
         holder.mRelationshipAgeView.setText(relationshipAge);
 
         holder.mPushProfileButton.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +69,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
         public final TextView mRelationshipAgeView;
         public final ImageView mPhotoView;
         public final ImageButton mPushProfileButton;
-        public Profile mItem;
+        public Visitor mItem;
 
         public ViewHolder(View view) {
             super(view);

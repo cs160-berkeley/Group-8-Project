@@ -5,17 +5,17 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ProfileActivity extends Activity {
 
-    private TextView mTextView;
-
     private Typeface main_type;
     private ImageView profilePhoto;
     private TextView profileName;
     private TextView profileInfo;
+    private Visitor visitorProfile;
 
     /**
      * Created by KunalPatel on 4/17/16.
@@ -25,61 +25,22 @@ public class ProfileActivity extends Activity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_profile);
-//        final WatchViewStub stub = (WatchViewStub) findViewById(R.id.watch_view_stub);
-//        stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
-//            @Override
-//            public void onLayoutInflated(WatchViewStub stub) {
-//                mTextView = (TextView) stub.findViewById(R.id.text);
-//            }
-//        });
+
+            visitorProfile = (Visitor) getIntent().getSerializableExtra(WatchToPhoneService.PROFILE_KEY);
+            Log.d("ProfileActivity", "Loaded profile of " + visitorProfile.name);
 
             main_type = Typeface.createFromAsset(getAssets(), "Lato2OFL/Lato-Bold.ttf");
+
             profilePhoto = (ImageView) findViewById(R.id.profile_photo);
+            profilePhoto.setImageBitmap(visitorProfile.getImage());
+
             profileName = (TextView) findViewById(R.id.profile_name);
+            profileName.setText(visitorProfile.name);
+
             profileInfo = (TextView) findViewById(R.id.profile_info);
+            profileInfo.setText(visitorProfile.relationship + ", " + visitorProfile.age);
 //        profileName.setTypeface(main_type);
 //        profileInfo.setTypeface(main_type);
-//
-//        profilePhoto.setImageResource(R.drawable.jeremy_miller);
-//        profileName.setText("Jeremy Miller");
-//        profileInfo.setText("Son, 42");
-            setContentView(R.layout.profile_activity);
-
-            loadProfilePicture();
-            loadProfileName();
-
-        /*
-            Forced profile loading: proof of work for prog 03
-            pro
-         */
-
-        }
-
-        private void loadProfilePicture() {
-
-            byte[] data = getIntent().getByteArrayExtra("PROFILE_PICTURE");
-
-            if (data != null) {
-
-                Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
-
-                if (bmp != null) {
-
-
-                    this.profilePhoto.setImageBitmap(bmp);
-
-                }
-            } else {
-                System.err.println("IMAGE IS NULL");
-            }
-        }
-
-        private void loadProfileName() {
-
-            ProfileInfo profInfo = (ProfileInfo) getIntent().getSerializableExtra("PROFILE_INFO");
-            this.profileName.setText(profInfo.getName());
-
-
         }
     }
 

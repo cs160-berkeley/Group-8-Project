@@ -31,13 +31,11 @@ public class WatchToPhoneService extends WearableListenerService implements Goog
     private GoogleApiClient mWatchApiClient;
     private List<Node> nodes = new ArrayList<>();
     private static final String PROFILE_PATH = "/PROFILE";
-    private static final String IMAGE_KEY = "IMAGE";
-    private static final String PROFILE_KEY = "PROFILE_INFO";
+    static final String PROFILE_KEY = "PROFILE_INFO";
 
 
     private String path = "sample path";
     private String message = "sample message";
-    private Profile profile;
 
 
     private byte[] messageBytes;
@@ -178,10 +176,8 @@ public class WatchToPhoneService extends WearableListenerService implements Goog
                 if (WatchToPhoneService.PROFILE_PATH.equals(path)) {
                     DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
 
-                    byte[] profilePic = dataMapItem.getDataMap().getByteArray(IMAGE_KEY);
-
                     byte[] serialized = dataMapItem.getDataMap().getByteArray(WatchToPhoneService.PROFILE_KEY);
-                    ProfileInfo profileInfo = (ProfileInfo) SerializationUtils.deserialize(serialized);
+                    Visitor profileInfo = (Visitor) SerializationUtils.deserialize(serialized);
 
                         /*
                             Do stuff with the profile and picture
@@ -190,8 +186,7 @@ public class WatchToPhoneService extends WearableListenerService implements Goog
                     Intent intent = new Intent(this, ProfileActivity.class);
 
                     System.out.println("Watch received image!");
-                    intent.putExtra("PROFILE_INFO", profileInfo);
-                    intent.putExtra("PROFILE_PICTURE", profilePic);
+                    intent.putExtra(PROFILE_KEY, profileInfo);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
 

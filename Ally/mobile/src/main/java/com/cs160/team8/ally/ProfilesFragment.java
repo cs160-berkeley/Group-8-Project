@@ -6,9 +6,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
 
 /**
  * A fragment representing a list of Profiles.
@@ -64,7 +67,10 @@ public class ProfilesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ProfileRecyclerViewAdapter(((MainActivity) getContext()).profiles, mListener));
+
+            List<Visitor> visitors = ((MainActivity) getContext()).currentPatient.getVisitors();
+            Log.d("VisitorProfiles", "Number of visitor profiles: " + visitors.size());
+            recyclerView.setAdapter(new ProfileRecyclerViewAdapter(visitors, mListener));
         }
 
         return view;
@@ -99,8 +105,8 @@ public class ProfilesFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnProfileFragmentInteractionListener {
-        void onPushProfileInteraction(Profile profile);
+        void onPushProfileInteraction(Visitor visitor);
 
-        void onEditProfileInteraction(Profile profile);
+        void onEditProfileInteraction(Visitor visitor);
     }
 }

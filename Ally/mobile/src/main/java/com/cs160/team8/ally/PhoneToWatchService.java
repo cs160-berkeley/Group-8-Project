@@ -42,7 +42,6 @@ public class PhoneToWatchService extends WearableListenerService implements Goog
     private  byte[] message;
     private Context context;
     private static final String PROFILE_PATH = "/PROFILE";
-    private static final String IMAGE_KEY = "IMAGE";
     private static final String PROFILE_KEY = "PROFILE_INFO";
 
     public PhoneToWatchService() {
@@ -61,16 +60,13 @@ public class PhoneToWatchService extends WearableListenerService implements Goog
     }
 
 
-    public void sendProfile (Context context, Profile profile) {
+    public void sendProfile (Context context, Visitor profile) {
+        Log.d("SendProfile", "Sending " + profile.name + " to the watch");
         mApiClient = new GoogleApiClient.Builder(context).addApi(Wearable.API).addConnectionCallbacks(this).build();
         mApiClient.connect();
         PutDataMapRequest dataMap = PutDataMapRequest.create(PROFILE_PATH);
 
-//        dataMap.getDataMap().putAsset(IMAGE_KEY, profileWrapper.getAsset());
-        dataMap.getDataMap().putByteArray(IMAGE_KEY, toBytes(profile.getPhoto()));
-
-        // Send profile info and bitmap image separately, since bitmaps aren't serializable
-        dataMap.getDataMap().putByteArray(PROFILE_KEY, SerializationUtils.serialize(profile.getProfileInfo()));
+        dataMap.getDataMap().putByteArray(PROFILE_KEY, SerializationUtils.serialize(profile));
         dataMap.getDataMap().putLong("time", new Date().getTime());
         PutDataRequest request = dataMap.asPutDataRequest();
         Wearable.DataApi.putDataItem(mApiClient, request)

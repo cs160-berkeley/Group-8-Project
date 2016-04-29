@@ -31,15 +31,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity
         implements ProfilesFragment.OnProfileFragmentInteractionListener,
         HomeFragment.OnFragmentInteractionListener,
         RemindersFragment.OnFragmentInteractionListener {
 
-    public List<Profile> profiles;
+    Patient currentPatient;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -73,18 +70,11 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bitmap evanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
-        Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.chloe);
-        Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
 
-
-        profiles = new ArrayList<>();
-        profiles.add(new Profile("Evan Miller", "Grandson", evanPhoto, 9));
-        profiles.add(new Profile("Chloe Stanson", "Caretaker", chloePhoto, 26));
-        profiles.add(new Profile("Jeremy Miller", "Son", jeremyPhoto, 42));
-
-        // TODO: set title to patient name
-        setTitle("Sally Miller");
+        currentPatient = Patient.findById(Patient.class, extras.getLong(SelectPatientActivity.PATIENT_ID));
+        setTitle(currentPatient.name);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -206,17 +196,15 @@ public class MainActivity extends AppCompatActivity
 
                         Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
 
-                        Profile profile = new Profile(name, relationship, photo, age);
-
-                        ProfileInfo pinfo = profile.getProfileInfo();
-                        Log.d("Profile", pinfo.getName() + "'s profile has been created");
-                        // TODO: actually push the profile to the watch here
-                        displayNotification(pinfo.getName() + "'s profile has been created");
+                        Visitor visitor = new Visitor(name, currentPatient.getId(), relationship, photo, age);
+                        Log.d("Visitor", visitor.name + "'s profile has been created");
+                        // TODO: actually push the visitor to the watch here
+                        displayNotification(visitor.firstName() + "'s profile has been created");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.d("Profile", "Create profile cancelled");
+                        Log.d("Visitor", "Create profile cancelled");
                     }
                 });
 
@@ -290,7 +278,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
+            // Show 3 total pages.
             return 3;
         }
 
@@ -303,7 +291,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void onPushProfileInteraction(final Profile profile) {
+    public void onPushProfileInteraction(final Visitor visitor) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_push_profile, null);
@@ -312,25 +300,17 @@ public class MainActivity extends AppCompatActivity
         TextView name = (TextView) view.findViewById(R.id.dialog_name);
         TextView relationshipAge = (TextView) view.findViewById(R.id.dialog_relationship_age);
 
-        photo.setImageBitmap(profile.getPhoto());
-
-        final ProfileInfo pinfo = profile.getProfileInfo();
-        Log.d("Profile", pinfo.getName());
-
-        name.setText(pinfo.getName());
-        relationshipAge.setText(pinfo.getRelationship() + ", " + pinfo.getAge());
+        photo.setImageBitmap(visitor.getImage());
+        name.setText(visitor.name);
+        relationshipAge.setText(visitor.relationship + ", " + visitor.age);
 
         builder.setView(view)
                 .setPositiveButton("Push", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Log.d("PushProfile", pinfo.getName() + "'s profile pushed to watch");
+                        Log.d("PushProfile", visitor.name + "'s profile pushed to watch");
 
-                        // TODO: actually push the profile to the watch here
-                        //Thanks for the descriptive comments, Joel!
-
-                        new PhoneToWatchService().sendProfile(getApplicationContext(),profile);
-
-                        displayNotification(pinfo.getName() + "'s profile has been pushed to the patient");
+                        new PhoneToWatchService().sendProfile(getApplicationContext(), visitor);
+                        displayNotification(visitor.firstName() + "'s profile has been pushed to the patient");
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -348,7 +328,7 @@ public class MainActivity extends AppCompatActivity
                 msg, Snackbar.LENGTH_SHORT).show();
     }
 
-    public void onEditProfileInteraction(Profile profile) {
+    public void onEditProfileInteraction(Visitor visitor) {
 
     }
 
