@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.List;
+
 /**
  * A fragment representing a list of Profiles.
  * <p/>
@@ -64,7 +66,9 @@ public class ProfilesFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            recyclerView.setAdapter(new ProfileRecyclerViewAdapter(((MainActivity) getContext()).visitors, mListener));
+
+            List<Visitor> visitors = ((MainActivity) getContext()).currentPatient.getVisitors();
+            recyclerView.setAdapter(new ProfileRecyclerViewAdapter(visitors, mListener));
         }
 
         return view;

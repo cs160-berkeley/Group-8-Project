@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         HomeFragment.OnFragmentInteractionListener,
         RemindersFragment.OnFragmentInteractionListener {
 
-    public List<Visitor> visitors;
+    Patient currentPatient;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -85,16 +85,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+
+        currentPatient = Patient.findById(Patient.class, extras.getLong(SelectPatientActivity.PATIENT_ID));
+        setTitle(currentPatient.name);
+
         Bitmap evanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
         Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.chloe);
         Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
-        visitors = new ArrayList<>();
-        visitors.add(new Visitor("Evan Miller", "Grandson", evanPhoto, 9));
-        visitors.add(new Visitor("Chloe Stanson", "Caretaker", chloePhoto, 26));
-        visitors.add(new Visitor("Jeremy Miller", "Son", jeremyPhoto, 42));
-
-        // TODO: set title to patient name
-        setTitle("Sally Miller");
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -275,7 +274,7 @@ public class MainActivity extends AppCompatActivity
 
                         Bitmap photo = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
 
-                        Visitor visitor = new Visitor(name, relationship, photo, age);
+                        Visitor visitor = new Visitor(name, currentPatient, relationship, photo, age);
                         Log.d("Visitor", visitor.name + "'s visitor has been created");
                         // TODO: actually push the visitor to the watch here
                         displayNotification(visitor.firstName() + "'s visitor has been created");
@@ -356,7 +355,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            // Show 4 total pages.
+            // Show 3 total pages.
             return 3;
         }
 
@@ -379,7 +378,7 @@ public class MainActivity extends AppCompatActivity
         TextView name = (TextView) view.findViewById(R.id.dialog_name);
         TextView relationshipAge = (TextView) view.findViewById(R.id.dialog_relationship_age);
 
-        photo.setImageBitmap(visitor.photo);
+        photo.setImageBitmap(visitor.getImage());
         name.setText(visitor.name);
         relationshipAge.setText(visitor.relationship + ", " + visitor.age);
 

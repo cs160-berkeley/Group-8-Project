@@ -1,7 +1,11 @@
 package com.cs160.team8.ally;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 import com.orm.SugarRecord;
 
+import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 /**
@@ -9,16 +13,19 @@ import java.util.List;
  */
 public class Patient extends SugarRecord {
     String name;
-    int age;
+    byte[] photo;
     int locationRadius;
 
     // Empty constructor required by SugarORM
     public Patient() { }
 
-    public Patient(String name, int age, int locationRadius) {
+    public Patient(String name, Bitmap photo, int locationRadius) {
         this.name = name;
-        this.age = age;
         this.locationRadius = locationRadius;
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        photo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+        this.photo = stream.toByteArray();
     }
 
     List<Visitor> getVisitors() {
@@ -29,5 +36,23 @@ public class Patient extends SugarRecord {
     List<Reminder> getReminders() {
         String[] id = new String[] { String.valueOf(getId()) };
         return Reminder.find(Reminder.class, "patient = ?", id);
+    }
+
+    public Bitmap getImage() {
+        return BitmapFactory.decodeByteArray(photo, 0, photo.length);
+    }
+
+    public String firstName() {
+        return name.split(" ")[0];
+    }
+
+    public String lastName() {
+        return name.split(" ")[1];
+    }
+
+    public String abbreviatedName() {
+        String firstName = firstName();
+        String lastName = lastName();
+        return String.format("%s %s.", firstName, lastName.substring(0, 1));
     }
 }
