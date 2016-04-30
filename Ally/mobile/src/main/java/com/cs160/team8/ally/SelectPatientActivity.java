@@ -3,14 +3,17 @@ package com.cs160.team8.ally;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Iterator;
@@ -24,6 +27,13 @@ public class SelectPatientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_patient);
+
+        Typeface main_type = Typeface.createFromAsset(getAssets(), "Quicksand-Regular.otf");
+        Typeface lato = Typeface.createFromAsset(getAssets(), "Lato2OFL/Lato-Regular.ttf");
+        TextView tagline = (TextView) findViewById(R.id.tagline);
+        connectPatientButton = (Button) findViewById(R.id.patient_connect_button);
+        connectPatientButton.setTypeface(lato);
+        tagline.setTypeface(main_type);
 
         Patient.deleteAll(Patient.class);
         long numPatients = Patient.count(Patient.class);
@@ -71,11 +81,11 @@ public class SelectPatientActivity extends AppCompatActivity {
 
     private void seedDatabase() {
         // Create Patients
-        Bitmap sallyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
-        Patient sally = new Patient("Sally Miller", sallyPhoto, 20);
-        sally.save();
+        Bitmap seanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.sean);
+        Patient sean = new Patient("Sean Nguyen", seanPhoto, 20);
+        sean.save();
 
-        Bitmap johnPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
+        Bitmap johnPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.john_photo);
         Patient john = new Patient("John Smith", johnPhoto, 20);
         john.save();
 
@@ -85,9 +95,9 @@ public class SelectPatientActivity extends AppCompatActivity {
         Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
 
 
-        Visitor evan = new Visitor("Evan Miller", sally.getId(), "Grandson", evanPhoto, 9);
-        Visitor chloe = new Visitor("Chloe Stanson", sally.getId(), "Caretaker", chloePhoto, 26);
-        Visitor jeremy = new Visitor("Jeremy Miller", sally.getId(), "Son", jeremyPhoto, 42);
+        Visitor evan = new Visitor("Evan Miller", sean.getId(), "Grandson", evanPhoto, 9);
+        Visitor chloe = new Visitor("Chloe Stanson", sean.getId(), "Caretaker", chloePhoto, 26);
+        Visitor jeremy = new Visitor("Jeremy Miller", sean.getId(), "Son", jeremyPhoto, 42);
 
         evan.save();
         chloe.save();

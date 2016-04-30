@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,13 +7,33 @@
     android:gravity="center_horizontal"
     tools:context="com.cs160.team8.ally.SelectPatientActivity">
 
+    <ImageView
+        android:id="@+id/logo_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="center"
+        android:src="@drawable/ally_logo"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp" />
+
+    <TextView
+        android:layout_width="700px"
+        android:layout_height="50px"
+        android:id="@+id/tagline"
+        android:text="Alzheimer's with Autonomy"
+        android:color="#828282"
+        android:layout_below="@+id/logo_image"
+        android:layout_alignStart="@+id/logo_image" />
+
     <LinearLayout
         android:id="@+id/patients_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center"
-        >
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
 
     </LinearLayout>
 
@@ -21,11 +41,12 @@
         android:id="@+id/patient_connect_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
         android:paddingStart="40dp"
         android:paddingEnd="40dp"
         android:textColor="#FFF"
         android:background="@color/colorPrimary"
         android:onClick="connectToPatient"
-        />
-</LinearLayout>
+        android:layout_marginTop="59dp"
+        android:layout_below="@+id/patients_container"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
