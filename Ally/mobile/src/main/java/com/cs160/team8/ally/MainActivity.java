@@ -1,6 +1,7 @@
 package com.cs160.team8.ally;
 
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
@@ -205,9 +206,10 @@ public class MainActivity extends AppCompatActivity
             public void onReadRemoteRssi (BluetoothGatt gatt, int rssi, int status) {
                 if (status == BluetoothGatt.GATT_SUCCESS) {
 //                    Log.d("onReadRemoteRssi", "Signal strength: " + rssi);
-//                    if (rssi > 6 || rssi < -6) {
-                    notifyUser(rssi);
-//                    }
+                    notifyUser("Ally (debug)", "Signal strength = " + rssi, 43);
+                    if (rssi < -6) {
+                        notifyUser("Ally", "Patient at max range!", 42);
+                    }
                 } else {
 //                    Log.d("onReadRemoteRssi", "Read RSSI error... status: " + status);
                 }
@@ -228,18 +230,29 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private void notifyUser(int rssi) {
+    /** This method is called whenever the patient reaches max distance.
+     *  Feel free to modify behavior below.
+    */
+    private void notifyUser(String title, String text, int notifId) {
         NotificationCompat.Builder notif =
                 new NotificationCompat.Builder(this)
                         .setSmallIcon(R.drawable.ic_person)
-                        .setContentTitle("Ally")
-                        .setContentText("Patient distance: " + rssi);
+                        .setContentTitle(title)
+                        .setContentText(text);
 
+        // resultIntent specifies the destination when user clicks the notification
         Intent resultIntent = new Intent(this, MainActivity.class);
-
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        notif.setContentIntent(resultPendingIntent);
 
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(42, notif.build());
+        mNotificationManager.notify(notifId, notif.build());
     }
 
     private void openNewProfileDialog() {
