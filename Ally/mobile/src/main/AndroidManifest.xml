@@ -19,6 +19,10 @@
         <meta-data android:name="DATABASE" android:value="ally.db" />
         <meta-data android:name="VERSION" android:value="1" />
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="com.cs160.team8.ally" />
+        <!--API key password: "keypass" , name: "myKey"-->
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAPSX8gqYQ8GbxwmT5yaSKKs-v9VmAzJEE" />
 
         <activity
             android:name=".MainActivity"

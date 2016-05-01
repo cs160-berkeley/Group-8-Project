@@ -1,30 +1,123 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".HomeFragment">
+    <TextView
+        android:layout_width="600px"
+        android:layout_height="150px"
+        android:id="@+id/patientname"
+        android:layout_marginTop="59dp"
+        android:textSize="14pt"
+        android:textColor="#333333"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
-    <ImageButton
-        android:id="@+id/message_patient_screen"
-        android:layout_width="match_parent"
-        android:paddingTop="20px"
-        android:layout_height="wrap_content"
-        android:src="@drawable/message_patient_screen"
+    <!--<ImageButton-->
+        <!--android:id="@+id/message_patient_screen"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:paddingTop="20px"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/message_patient_screen"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:background="@color/white"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:layout_gravity="center" />-->
+
+
+    <ImageView
+        android:id="@+id/patient_profile_photo"
+        android:layout_width="350px"
+        android:layout_height = "350px"
+        android:paddingTop="30px"
+        android:paddingBottom="30px"
         android:adjustViewBounds="true"
-        android:background="@color/white"
+        android:background="@drawable/background_circle"
         android:scaleType="centerCrop"
-        android:layout_gravity="center" />
+        android:layout_marginTop="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/relativeLayout" />
 
-    <ImageButton
-        android:id="@+id/patient_location_screen"
-        android:layout_width="match_parent"
-        android:paddingTop="20px"
-        android:layout_height="wrap_content"
-        android:src="@drawable/patient_location_screen"
-        android:adjustViewBounds="true"
-        android:background="@color/white"
-        android:scaleType="centerCrop"
-        android:layout_gravity="center" />
+    <Button
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:id="@+id/message_patient_button"
+        android:textColor="@color/white"
+        android:radius="20dp"
+        android:background="@color/colorPrimary"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/patientname"
+        android:layout_alignStart="@+id/patientname"
+        android:layout_marginStart="11dp" />
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="325dp"
+        android:layout_height="100dp"
+        android:background="#11EB5757"
+        android:layout_below="@+id/patient_profile_photo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:id="@+id/relativeLayout">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:id="@+id/pillreminder"
+            android:textSize="8pt"
+            android:paddingLeft="5dp"
+            android:paddingRight="5dp"/>
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:id="@+id/remind"
+            android:layout_marginBottom="12dp"
+            android:layout_alignParentBottom="true"
+            android:layout_toStartOf="@+id/dismiss"
+            android:layout_marginEnd="18dp"
+            android:textColor="#EB5757"/>
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="30dp"
+            android:id="@+id/dismiss"
+            android:layout_alignTop="@+id/remind"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"
+            android:textColor="#219653"/>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/mapfragmentcontainer"
+        android:layout_width="500dp"
+        android:layout_height="250dp"
+        android:orientation="vertical"
+        android:layout_marginTop="30dp"
+        android:layout_below="@+id/relativeLayout"
+        android:layout_alignParentStart="true">
+        <TextView
+            android:id="@+id/is_in_range"
+            android:layout_height="20dp"
+            android:layout_width="250dp"
+            android:background="@color/white"/>
+
+    </LinearLayout>
+
+
+    <!--<ImageButton-->
+        <!--android:id="@+id/patient_location_screen"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:paddingTop="20px"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:src="@drawable/patient_location_screen"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:background="@color/white"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:layout_gravity="center" />-->
+
+</RelativeLayout>
+    </ScrollView>

@@ -3,6 +3,8 @@ package com.cs160.team8.ally;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
 /**
@@ -26,6 +32,11 @@ import android.widget.ImageButton;
 public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    static Patient patient;
+
+    public void onFragmentInteraction(Uri uri){
+
+    }
 
     public HomeFragment() {
         // Required empty public constructor
@@ -38,8 +49,9 @@ public class HomeFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance() {
+    public static HomeFragment newInstance(Patient p) {
         HomeFragment fragment = new HomeFragment();
+        patient = p;
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -51,6 +63,15 @@ public class HomeFragment extends Fragment {
         if (getArguments() != null) {
             // Retrieve arguments passed in newInstance
         }
+        LinearLayout fragContainer = (LinearLayout) getActivity().findViewById(R.id.mapfragmentcontainer);
+
+//        LinearLayout ll = new LinearLayout(getActivity());
+//        ll.setOrientation(LinearLayout.HORIZONTAL);
+//
+//        ll.setId(1);
+
+
+//        fragContainer.addView(ll);
     }
 
     @Override
@@ -58,20 +79,42 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        ImageButton button = (ImageButton) view.findViewById(R.id.message_patient_screen);
+        Button button = (Button) view.findViewById(R.id.message_patient_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 messagePatient();
             }
         });
-
-        ImageButton mapButton = (ImageButton) view.findViewById(R.id.patient_location_screen);
-        mapButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PatientLocationActivity.class);
-                startActivity(intent);
-            }
-        });
+        TextView name = (TextView)  view.findViewById(R.id.patientname);
+        TextView reminder = (TextView) view.findViewById(R.id.pillreminder);
+        TextView remind = (TextView) view.findViewById(R.id.remind);
+        TextView dismiss = (TextView) view.findViewById(R.id.dismiss);
+        TextView range = (TextView) view.findViewById(R.id.is_in_range);
+        remind.setText("REMIND");
+        dismiss.setText("DISMISS");
+        range.setText(patient.name + " is in the safe zone.");
+        reminder.setText(patient.name + " was supposed to take their heart pill 30 minutes ago!");
+        button.setText("Message Patient");
+        name.setText(patient.name);
+        ImageView photo = (ImageView) view.findViewById(R.id.patient_profile_photo);
+        photo.setImageBitmap(patient.getImage());
+        Typeface main_type = Typeface.createFromAsset(getActivity().getAssets(), "Quicksand-Regular.otf");
+        Typeface lato = Typeface.createFromAsset(getActivity().getAssets(), "Lato2OFL/Lato-Regular.ttf");
+        name.setTypeface(lato);
+        button.setTypeface(lato);
+        reminder.setTypeface(lato);
+        dismiss.setTypeface(lato);
+        remind.setTypeface(lato);
+        range.setTypeface(lato);
+//        ImageButton mapButton = (ImageButton) view.findViewById(R.id.patient_location_screen);
+//        mapButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getContext(), PatientLocationActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+        Fragment loc = new LocationFragment();
+        getChildFragmentManager().beginTransaction().add(R.id.mapfragmentcontainer, loc, "locationfragment").commit();
         return view;
     }
 

@@ -267,13 +267,13 @@ public class MainActivity extends AppCompatActivity
             // getItem is called to instantiate the fragment for the given page.
             switch (position) {
                 case 0:
-                    return HomeFragment.newInstance();
+                    return HomeFragment.newInstance(currentPatient);
                 case 1:
                     return ProfilesFragment.newInstance(1);
                 case 2:
                     return RemindersFragment.newInstance();
             }
-            return HomeFragment.newInstance();
+            return HomeFragment.newInstance(currentPatient);
         }
 
         @Override
