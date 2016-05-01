@@ -1,5 +1,14 @@
 package com.cs160.team8.ally;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
+import android.bluetooth.BluetoothManager;
+import android.bluetooth.BluetoothProfile;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -10,6 +19,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
@@ -30,6 +40,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity
         implements ProfilesFragment.OnProfileFragmentInteractionListener,
@@ -165,6 +179,80 @@ public class MainActivity extends AppCompatActivity
 
 
          */
+        final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
+            @Override
+            public void onConnectionStateChange(BluetoothGatt gatt, int status,
+                                                int newState) {
+                if (newState == BluetoothProfile.STATE_CONNECTED) {
+//                    Log.d("Bluetooth connected!", "(connected)");
+                    final BluetoothGatt bGatt = gatt;
+//                    bGatt.readRemoteRssi();
+//                    Log.d("Reading RSSI...", "check!");
+                    TimerTask task = new TimerTask()
+                    {
+                        @Override
+                        public void run()
+                        {
+                            bGatt.readRemoteRssi();
+//                                Log.d("Reading RSSI...", "check!");
+                        }
+                    };
+                    Timer rssiTimer = new Timer();
+                    rssiTimer.schedule(task, 1000, 5000);
+                }
+            }
+
+            @Override
+            public void onReadRemoteRssi (BluetoothGatt gatt, int rssi, int status) {
+                if (status == BluetoothGatt.GATT_SUCCESS) {
+//                    Log.d("onReadRemoteRssi", "Signal strength: " + rssi);
+                    notifyUser("Ally (debug)", "Signal strength = " + rssi, 43);
+                    if (rssi < -6) {
+                        notifyUser("Ally", "Patient at max range!", 42);
+                    }
+                } else {
+//                    Log.d("onReadRemoteRssi", "Read RSSI error... status: " + status);
+                }
+            }
+        };
+
+        BluetoothManager bManager = (BluetoothManager) getSystemService(Context.BLUETOOTH_SERVICE);
+        BluetoothAdapter bAdapter = bManager.getAdapter();
+
+        BluetoothDevice watch = null;
+        Set<BluetoothDevice> pairedDevices = bAdapter.getBondedDevices();
+        if (pairedDevices.size() > 0) {
+            for (BluetoothDevice device : pairedDevices) {
+                watch = bAdapter.getRemoteDevice(device.getAddress());
+//                Log.d("Paired watch: ", " " + watch);
+                watch.connectGatt(this, false, mGattCallback);
+            }
+        }
+    }
+
+    /** This method is called whenever the patient reaches max distance.
+     *  Feel free to modify behavior below.
+    */
+    private void notifyUser(String title, String text, int notifId) {
+        NotificationCompat.Builder notif =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_person)
+                        .setContentTitle(title)
+                        .setContentText(text);
+
+        // resultIntent specifies the destination when user clicks the notification
+        Intent resultIntent = new Intent(this, PatientLocationActivity.class);
+        PendingIntent resultPendingIntent =
+                PendingIntent.getActivity(
+                        this,
+                        0,
+                        resultIntent,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        notif.setContentIntent(resultPendingIntent);
+
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.notify(notifId, notif.build());
     }
 
     private void openNewProfileDialog() {
