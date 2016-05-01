@@ -12,11 +12,11 @@
         android:layout_width="600px"
         android:layout_height="150px"
         android:id="@+id/patientname"
-        android:layout_marginTop="59dp"
         android:textSize="14pt"
         android:textColor="#333333"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignTop="@+id/patient_profile_photo"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="23dp" />
 
     <!--<ImageButton-->
         <!--android:id="@+id/message_patient_screen"-->
@@ -32,8 +32,8 @@
 
     <ImageView
         android:id="@+id/patient_profile_photo"
-        android:layout_width="350px"
-        android:layout_height = "350px"
+        android:layout_width="300px"
+        android:layout_height = "300px"
         android:paddingTop="30px"
         android:paddingBottom="30px"
         android:adjustViewBounds="true"
@@ -52,8 +52,7 @@
         android:background="@color/colorPrimary"
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/patientname"
-        android:layout_alignStart="@+id/patientname"
-        android:layout_marginStart="11dp" />
+        android:layout_alignEnd="@+id/relativeLayout" />
 
     <RelativeLayout
         android:layout_width="325dp"

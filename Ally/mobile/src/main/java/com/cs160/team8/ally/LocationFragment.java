@@ -62,13 +62,13 @@ public class LocationFragment extends Fragment {
         MapsInitializer.initialize( v.getContext());
 
         googleMap.addMarker(new MarkerOptions()
-                .position( new LatLng( 38.7222524, -9.139336599999979))
+                .position( new LatLng( 37.876276, -122.258855))
                         .title("Sean's Location")
                         .icon(BitmapDescriptorFactory
                                 .fromResource(R.drawable.map_marker_icon)));
 
         // Move the camera instantly  with a zoom of 15.
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng( 38.7222524, -9.139336599999979), 15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng( 37.876276, -122.258855), 15));
 
         // Zoom in, animating the camera.
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
