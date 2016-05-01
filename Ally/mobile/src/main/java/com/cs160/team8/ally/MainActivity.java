@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity
                         .setContentText(text);
 
         // resultIntent specifies the destination when user clicks the notification
-        Intent resultIntent = new Intent(this, MainActivity.class);
+        Intent resultIntent = new Intent(this, PatientLocationActivity.class);
         PendingIntent resultPendingIntent =
                 PendingIntent.getActivity(
                         this,
