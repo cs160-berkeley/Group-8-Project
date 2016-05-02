@@ -1,9 +1,12 @@
 package com.cs160.team8.ally;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.cs160.team8.ally.ReminderFragment.OnReminderFragmentInteractionListener;
@@ -35,8 +38,29 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getTime());
-        holder.mContentView.setText(mValues.get(position).title);
+        holder.mTimeView.setText(holder.mItem.getTime());
+        holder.mTitleView.setText(holder.mItem.title);
+
+        if (holder.mItem.active) {
+            holder.mActiveSwitch.setChecked(true);
+            holder.makeActive();
+        } else {
+            holder.mActiveSwitch.setChecked(false);
+            holder.makeInactive();
+        }
+        holder.mActiveSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                holder.mItem.active = isChecked;
+                holder.mItem.save();
+
+                if (isChecked) {
+                    holder.makeActive();
+                } else {
+                    holder.makeInactive();
+                }
+            }
+        });
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,20 +81,35 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
+        public final TextView mTimeView;
+        public final TextView mTitleView;
+        public final Switch mActiveSwitch;
         public Reminder mItem;
 
         public ViewHolder(View view) {
             super(view);
             mView = view;
-            mIdView = (TextView) view.findViewById(R.id.id);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mTimeView = (TextView) view.findViewById(R.id.reminder_time);
+            mTitleView = (TextView) view.findViewById(R.id.reminder_title);
+
+            mActiveSwitch = (Switch) view.findViewById(R.id.reminder_active_switch);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mTitleView.getText() + "'";
+        }
+
+        public void makeActive() {
+            itemView.setBackgroundColor(Color.parseColor("#fdfdfd"));
+            mTimeView.setTextColor(Color.parseColor("#000000"));
+            mTitleView.setTextColor(Color.parseColor("#969696"));
+        }
+
+        public void makeInactive() {
+            itemView.setBackgroundColor(Color.parseColor("#E9E9E9"));
+            mTimeView.setTextColor(Color.parseColor("#8A8A8A"));
+            mTitleView.setTextColor(Color.parseColor("#AEAEAE"));
         }
     }
 }
