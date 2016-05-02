@@ -35,6 +35,34 @@
             android:label="@string/title_activity_reminder">
         </activity>
 
+        <activity
+            android:name=".PressHelp"
+            android:label="@string/title_activity_press_help">
+        </activity>
+
+        <activity
+            android:name=".WaitOne"
+            android:label="@string/title_activity_wait_one">
+        </activity>
+
+
+        <activity
+            android:name=".WaitTwo"
+            android:label="@string/title_activity_wait_two">
+        </activity>
+
+
+        <activity
+            android:name=".WaitThree"
+            android:label="@string/title_activity_wait_three">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+
         <service android:name=".WatchToPhoneService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
