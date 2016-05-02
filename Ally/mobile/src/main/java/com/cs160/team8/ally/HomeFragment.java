@@ -2,9 +2,7 @@ package com.cs160.team8.ally;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Typeface;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -87,13 +84,25 @@ public class HomeFragment extends Fragment {
         });
         TextView name = (TextView)  view.findViewById(R.id.patientname);
         TextView reminder = (TextView) view.findViewById(R.id.pillreminder);
+
         TextView remind = (TextView) view.findViewById(R.id.remind);
         TextView dismiss = (TextView) view.findViewById(R.id.dismiss);
-        TextView range = (TextView) view.findViewById(R.id.is_in_range);
+        remind.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Send medication reminder to watch
+                Medication medication = new Medication("Lipitor", 1);
+                new PhoneToWatchService().sendMedicationReminder(getContext(),medication);
+            }
+        });
         remind.setText("REMIND");
         dismiss.setText("DISMISS");
+
+        TextView range = (TextView) view.findViewById(R.id.is_in_range);
         range.setText(patient.name + " is in the safe zone.");
-        reminder.setText(patient.name + " was supposed to take their heart pill 30 minutes ago!");
+        reminder.setText(patient.name + " was supposed to take their Lipitor 30 minutes ago!");
+
         button.setText("Message Patient");
         name.setText(patient.name);
         ImageView photo = (ImageView) view.findViewById(R.id.patient_profile_photo);

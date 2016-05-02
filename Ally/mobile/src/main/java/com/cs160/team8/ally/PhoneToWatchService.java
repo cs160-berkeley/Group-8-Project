@@ -8,7 +8,10 @@ import android.util.Log;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.MessageEvent;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
@@ -43,11 +46,11 @@ public class PhoneToWatchService extends WearableListenerService implements Goog
     private Context context;
     private static final String PROFILE_PATH = "/PROFILE";
     private static final String PROFILE_KEY = "PROFILE_INFO";
+    private static final String MEDICATION_REMINDER_PATH = "/MEDICATION_REMINDER";
 
     public PhoneToWatchService() {
         this.path = "sample";
         this.message = "sample".getBytes();
-
     }
 
     public PhoneToWatchService(String path, String message) {
@@ -81,57 +84,66 @@ public class PhoneToWatchService extends WearableListenerService implements Goog
 
     }
 
+    public void sendMedicationReminder(Context context, Medication medication) {
+        this.path = MEDICATION_REMINDER_PATH;
+        this.message = SerializationUtils.serialize(medication);
+
+        sendMessage(context);
+    }
+
+    public void openPressForHelpScreen(Context context) {
+        this.path = "PRESS_FOR_HELP";
+        this.message = "sample".getBytes();
+        sendMessage(context);
+    }
+
     // Messaging methods. Will be used later to open new activities.
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
-//        System.out.println("------------------message received by phone------------------------");
-//        path = messageEvent.getPath();
-//        message = messageEvent.getData();
+        System.out.println("------------------message received by phone------------------------");
+        path = messageEvent.getPath();
+        message = messageEvent.getData();
 
     }
 
     public void sendMessage(Context givenContext) {
-//        this.context = givenContext;
-//        mApiClient = new GoogleApiClient.Builder(givenContext).addApi(Wearable.API).addConnectionCallbacks(this).build();
-//        mApiClient.connect();
+        this.context = givenContext;
+        mApiClient = new GoogleApiClient.Builder(givenContext).addApi(Wearable.API).addConnectionCallbacks(this).build();
+        mApiClient.connect();
 
     }
 
     public void sendMessage(final String newPath, final String text, final Context context) {
-//        Log.d("SENDING", "MESSAGE");
-//        Log.d("SENDING", "MESSAGE");
-//
-//        setPath(path);
-//        setMessage(text.getBytes());
-//
-//        mApiClient = new GoogleApiClient.Builder(context).addApi(Wearable.API).addConnectionCallbacks(new PhoneToWatchService(path, message)).build();
-//        mApiClient.connect();
+        Log.d("SENDING", "MESSAGE");
+        setPath(path);
+        setMessage(text.getBytes());
+
+        mApiClient = new GoogleApiClient.Builder(context).addApi(Wearable.API).addConnectionCallbacks(new PhoneToWatchService(path, message)).build();
+        mApiClient.connect();
     }
 
     @Override
     public void onConnected(Bundle bundle) {
-//        System.out.println("Connected");
-//        Log.d("SENDING", "MESSAGE");
-//
-//
-//        System.out.println(" I'm about to send " + this.path);
-//        System.out.println(" I'm about to send "  + new String(message));
-//
-//
-//        new Thread( new Runnable() {
-//            @Override
-//            public void run() {
-//                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes( mApiClient ).await();
-//                for(Node node : nodes.getNodes()) {
-//                    MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
-//                            mApiClient, node.getId(), path, message ).await();
-//                }
-//                mApiClient.disconnect();
-//            }
-//        }).start();
-//
-//        System.out.println("Sent");
+        System.out.println("Connected");
+
+        System.out.println(" I'm about to send " + this.path);
+        System.out.println(" I'm about to send "  + new String(message));
+
+
+        new Thread( new Runnable() {
+            @Override
+            public void run() {
+                NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes( mApiClient ).await();
+                for(Node node : nodes.getNodes()) {
+                    MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(
+                            mApiClient, node.getId(), path, message ).await();
+                }
+                mApiClient.disconnect();
+            }
+        }).start();
+
+        System.out.println("Sent");
     }
 
     @Override

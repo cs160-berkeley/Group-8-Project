@@ -4,16 +4,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.Iterator;
@@ -33,6 +30,13 @@ public class SelectPatientActivity extends AppCompatActivity {
         TextView tagline = (TextView) findViewById(R.id.tagline);
         connectPatientButton = (Button) findViewById(R.id.patient_connect_button);
         connectPatientButton.setTypeface(lato);
+        connectPatientButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new PhoneToWatchService().openPressForHelpScreen(getApplicationContext());
+                connectToPatient();
+            }
+        });
         tagline.setTypeface(main_type);
 
         Patient.deleteAll(Patient.class);
@@ -106,7 +110,7 @@ public class SelectPatientActivity extends AppCompatActivity {
         // TODO: create reminders for Sally here
     }
 
-    public void connectToPatient(View view) {
+    public void connectToPatient() {
         Log.d("SelectPatient", "Connecting with " + selectedPatient.name);
         Intent intent = new Intent(SelectPatientActivity.this, MainActivity.class);
         intent.putExtra(PATIENT_ID, selectedPatient.getId());

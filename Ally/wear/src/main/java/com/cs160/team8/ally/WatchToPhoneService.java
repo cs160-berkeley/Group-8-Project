@@ -3,7 +3,6 @@ package com.cs160.team8.ally;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -138,25 +137,27 @@ public class WatchToPhoneService extends WearableListenerService implements Goog
         messageBytes = messageEvent.getData();
 
         System.out.println(path);
-        System.out.println(new String(message));
 
 
-        if (path.equals("/START_ACTIVITY")) {
-            Toast.makeText(getBaseContext(), "Communication Successful!!!",
-                    Toast.LENGTH_SHORT).show();
+        if (path.equals("/MEDICATION_REMINDER")) {
+            Medication medication = (Medication) SerializationUtils.deserialize(messageBytes);
+            System.out.println(""+medication.getCount() + medication.getMedicationName());
+            Intent openMedicationReminder = new Intent(this, ReminderActivity.class);
+            openMedicationReminder.putExtra("MEDICATION", medication);
+            openMedicationReminder.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
+            startActivity(openMedicationReminder);
 
-            /*
-                Message should be blank. Passing entire profile through data layer instead.
-             */
+        }
 
+        else if (path.equals("PRESS_FOR_HELP")) {
 
-//            Intent start = new Intent(this, MainActivity.class);
-//            start.putExtra("REPRESENTATIVES", dataWrapper);
-//
-//            start.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//            startActivity(start);
+            // Open the PRESS FOR HELP screen
+
+            Intent intent = new Intent(this, PressHelp.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+
         }
 
 
