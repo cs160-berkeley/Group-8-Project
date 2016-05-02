@@ -50,7 +50,7 @@
                     android:id="@+id/profile_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
+                    android:layout_centerHorizontal="true"
                     android:textSize="15sp"
                     android:textColor="@color/primaryText"
                     android:text="Jeremy Miller"/>
@@ -60,8 +60,8 @@
                     android:layout_below="@+id/profile_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
                     android:textSize="15sp"
+                    android:layout_centerHorizontal="true"
                     android:textColor="@color/primaryText"
                     android:text="Son, 42"/>
 

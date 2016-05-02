@@ -1,19 +1,31 @@
 package com.cs160.team8.ally;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.wearable.view.BoxInsetLayout;
-import android.support.wearable.view.WatchViewStub;
+import android.os.CountDownTimer;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 public class PressHelp extends Activity {
 
     private TextView mTextView;
     TextView help_text;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
+    private static final String ON_THE_WAY = "Help is on the way!";
+    private static final String HOLD_FOR_HELP = "Hold for help";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,12 +34,101 @@ public class PressHelp extends Activity {
         help_text = (TextView) findViewById(R.id.title);
         help_text.setTypeface(main_type);
         RelativeLayout press = (RelativeLayout) findViewById(R.id.press);
-        press.setOnClickListener(new View.OnClickListener() {
+
+        help_text.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PressHelp.this, WaitThree.class);
-                startActivity(intent);
+            public boolean onTouch(View v, MotionEvent event) {
+
+
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    System.out.println("ACTION DETECTED");
+                    CountDownTimer count = new CountDownTimer(4000, 1000) {
+                        public void onTick(final long millisUntilFinished) {
+                            final int j = (int) millisUntilFinished;
+                            System.out.println("TIME LEFT:" + millisUntilFinished);
+//                            help_text.setText(""+(int)millisUntilFinished/1000);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    System.out.println(""+millisUntilFinished);
+                                    long secondsLeft = millisUntilFinished/1000;
+
+                                    if(!help_text.equals(HOLD_FOR_HELP) && !help_text.equals(ON_THE_WAY)) {
+                                        help_text.setText(""+ (secondsLeft) );
+                                    }
+                                }
+                            });
+                        }
+
+                        public void onFinish() {
+                            //  Send message to the phone asking for help.
+
+
+                            help_text.setText("Help is on the way!");
+                        }
+                    };
+                    count.start();
+                }
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (!help_text.equals(ON_THE_WAY) ){
+                        help_text.setText("Hold for help");
+                    }
+                }
+                return true;
             }
         });
+
+
+//        press.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent intent = new Intent(PressHelp.this, WaitThree.class);
+//                startActivity(intent);
+//            }
+//        });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "PressHelp Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.cs160.team8.ally/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "PressHelp Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.cs160.team8.ally/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }

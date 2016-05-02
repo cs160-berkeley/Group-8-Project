@@ -1,9 +1,10 @@
 package com.cs160.team8.ally;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
-import android.support.wearable.view.WatchViewStub;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -31,7 +32,33 @@ public class ReminderActivity extends Activity {
         reminderTitle = (TextView) findViewById(R.id.reminder_title);
         reminderButton = (ImageButton) findViewById(R.id.reminder_button);
 
-        reminderTitle.setText("Take one heart pill");
+//        reminderTitle.setText("Take one heart pill");
         reminderTitle.setTypeface(main_type);
+
+        loadMedicationReminder();
+        setReminderButtonListener();
+    }
+
+    public void loadMedicationReminder() {
+        Medication medication = (Medication) getIntent().getExtras().get("MEDICATION");
+        if (medication != null) {
+            this.reminderTitle.setText("Take " + medication.getCount()+ " " + medication.getMedicationName());
+        }
+    }
+
+    private void setReminderButtonListener() {
+        reminderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Return to presshelp screen
+                Intent returnToPressHelp = new Intent(getApplicationContext(), PressHelp.class);
+                startActivity(returnToPressHelp);
+
+
+                //Tell the phone that the medication was taken.
+
+            }
+        });
     }
 }

@@ -220,13 +220,18 @@ public class MainActivity extends AppCompatActivity
         BluetoothAdapter bAdapter = bManager.getAdapter();
 
         BluetoothDevice watch = null;
-        Set<BluetoothDevice> pairedDevices = bAdapter.getBondedDevices();
-        if (pairedDevices.size() > 0) {
-            for (BluetoothDevice device : pairedDevices) {
-                watch = bAdapter.getRemoteDevice(device.getAddress());
+        try {
+            Set<BluetoothDevice> pairedDevices = bAdapter.getBondedDevices();
+            if (pairedDevices.size() > 0) {
+                for (BluetoothDevice device : pairedDevices) {
+                    watch = bAdapter.getRemoteDevice(device.getAddress());
 //                Log.d("Paired watch: ", " " + watch);
-                watch.connectGatt(this, false, mGattCallback);
+                    watch.connectGatt(this, false, mGattCallback);
+                }
             }
+        }
+        catch (Exception e) {
+            System.out.println("Failed to initialize physical bluetooth device");
         }
     }
 
