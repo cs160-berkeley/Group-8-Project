@@ -13,7 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 public class SelectPatientActivity extends AppCompatActivity {
     static final String PATIENT_ID = "selected-patient-id";
@@ -108,6 +110,16 @@ public class SelectPatientActivity extends AppCompatActivity {
         jeremy.save();
 
         // TODO: create reminders for Sally here
+        List<Integer> everyDay = new ArrayList<Integer>();
+        for (int i = 0; i < 7; i += 1) {
+            everyDay.add(i);
+        }
+
+        Reminder heartPill = new Reminder(sean, "Take heart pill", 14, 30, everyDay, true, true, true);
+        Reminder takeWalk = new Reminder(sean, "Go for a walk", 15, 00, everyDay, true, true, true);
+
+        heartPill.save();
+        takeWalk.save();
     }
 
     public void connectToPatient() {

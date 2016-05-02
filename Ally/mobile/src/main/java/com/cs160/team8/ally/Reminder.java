@@ -31,4 +31,16 @@ public class Reminder extends SugarRecord {
         this.forPatient = forPatient;
         this.active = active;
     }
+
+    public String getTime() {
+        return String.format("%d:%02d %s", hour % 12, minute, getTimePeriod());
+    }
+
+    public String getTimePeriod() {
+        if (hour < 12) {
+            return "AM";
+        } else {
+            return "PM";
+        }
+    }
 }
