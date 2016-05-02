@@ -14,9 +14,10 @@
         android:id="@+id/patientname"
         android:textSize="14pt"
         android:textColor="#333333"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="11dp"
         android:layout_alignTop="@+id/patient_profile_photo"
-        android:layout_alignStart="@+id/message_patient_button" />
+        android:layout_alignStart="@+id/message_patient_button"
+        android:layout_alignEnd="@+id/relativeLayout" />
 
     <!--<ImageButton-->
         <!--android:id="@+id/message_patient_screen"-->
@@ -51,7 +52,7 @@
         android:radius="20dp"
         android:background="@color/colorPrimary"
         android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/patientname"
+        android:layout_alignBottom="@+id/patient_profile_photo"
         android:layout_alignEnd="@+id/relativeLayout" />
 
     <RelativeLayout

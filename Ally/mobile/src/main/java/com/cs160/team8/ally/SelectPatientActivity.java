@@ -91,12 +91,12 @@ public class SelectPatientActivity extends AppCompatActivity {
 
         // Create Visitors
         Bitmap evanPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.evan);
-        Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.chloe);
+        Bitmap chloePhoto = BitmapFactory.decodeResource(getResources(), R.drawable.kunal);
         Bitmap jeremyPhoto = BitmapFactory.decodeResource(getResources(), R.drawable.jeremy);
 
 
         Visitor evan = new Visitor("Evan Miller", sean.getId(), "Grandson", evanPhoto, 9);
-        Visitor chloe = new Visitor("Chloe Stanson", sean.getId(), "Caretaker", chloePhoto, 26);
+        Visitor chloe = new Visitor("Kunal Patel", sean.getId(), "Caretaker", chloePhoto, 26);
         Visitor jeremy = new Visitor("Jeremy Miller", sean.getId(), "Son", jeremyPhoto, 42);
 
         evan.save();
