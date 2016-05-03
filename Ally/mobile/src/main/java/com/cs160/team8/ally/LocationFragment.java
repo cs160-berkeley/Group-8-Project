@@ -1,15 +1,12 @@
 package com.cs160.team8.ally;
 
 import android.content.Context;
-import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,10 +22,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
  *Create a map fragment on the home screen
  */
 public class LocationFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private View view;
     GoogleMap googleMap;
 
@@ -57,18 +50,20 @@ public class LocationFragment extends Fragment {
         // TODO Auto-generated method stub
         View v = inflater.inflate(R.layout.fragment_location, container, false);
 
+        double lat = 37.878091;
+        double lon = -122.262124;
+
         googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapfragment)).getMap();
 
         MapsInitializer.initialize( v.getContext());
 
         googleMap.addMarker(new MarkerOptions()
-                .position( new LatLng( 38.7222524, -9.139336599999979))
-                        .title("Sean's Location")
-                        .icon(BitmapDescriptorFactory
-                                .fromResource(R.drawable.map_marker_icon)));
+                .position(new LatLng(lat, lon))
+                .title("Sean's Location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
 
         // Move the camera instantly  with a zoom of 15.
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng( 38.7222524, -9.139336599999979), 15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(lat, lon), 15));
 
         // Zoom in, animating the camera.
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
