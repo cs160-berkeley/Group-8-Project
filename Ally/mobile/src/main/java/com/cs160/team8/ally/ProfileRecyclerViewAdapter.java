@@ -1,5 +1,6 @@
 package com.cs160.team8.ally;
 
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
 
     private final List<Visitor> mValues;
     private final OnProfileFragmentInteractionListener mListener;
+    private Typeface lato;
 
     public ProfileRecyclerViewAdapter(List<Visitor> items, OnProfileFragmentInteractionListener listener) {
         mValues = items;
@@ -42,9 +44,11 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
         holder.mItem = mValues.get(position);
         holder.mPhotoView.setImageBitmap(visitor.getImage());
         holder.mNameView.setText(visitor.name);
+        holder.mNameView.setTypeface(lato);
 
         String relationshipAge = visitor.relationship + ", " + visitor.age;
         holder.mRelationshipAgeView.setText(relationshipAge);
+        holder.mRelationshipAgeView.setTypeface(lato);
 
         holder.mPushProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +82,7 @@ public class ProfileRecyclerViewAdapter extends RecyclerView.Adapter<ProfileRecy
             mNameView = (TextView) view.findViewById(R.id.profile_name);
             mRelationshipAgeView = (TextView) view.findViewById(R.id.profile_relationship_age);
             mPushProfileButton = (ImageButton) view.findViewById(R.id.push_profile);
+            lato = Typeface.createFromAsset(view.getContext().getAssets(), "Lato2OFL/Lato-Regular.ttf");
         }
 
         @Override

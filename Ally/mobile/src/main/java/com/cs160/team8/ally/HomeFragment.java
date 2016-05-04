@@ -101,9 +101,9 @@ public class HomeFragment extends Fragment {
 
         TextView range = (TextView) view.findViewById(R.id.is_in_range);
         range.setText(patient.name + " is in the safe zone.");
-        reminder.setText(patient.name + " was supposed to take their Lipitor 30 minutes ago!");
+        reminder.setText(patient.name + " was supposed to take Lipitor 30 minutes ago!");
 
-        button.setText("Message Patient");
+//        button.setText("Message Patient");
         name.setText(patient.name);
         ImageView photo = (ImageView) view.findViewById(R.id.patient_profile_photo);
         photo.setImageBitmap(patient.getImage());

@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity
     private ViewPager mViewPager;
     private TabLayout tabLayout;
     private FloatingActionButton fab;
+    private Typeface lato;
     private int[] tabIcons = {
             R.drawable.ic_person,
             R.drawable.ic_people,
@@ -87,6 +89,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
+        lato = Typeface.createFromAsset(getAssets(), "Lato2OFL/Lato-Regular.ttf");
         currentPatient = Patient.findById(Patient.class, extras.getLong(SelectPatientActivity.PATIENT_ID));
         setTitle(currentPatient.name);
 
@@ -149,6 +152,7 @@ public class MainActivity extends AppCompatActivity
                         int activeColor = ContextCompat.getColor(MainActivity.this, R.color.tabActive);
                         icon.setColorFilter(activeColor, PorterDuff.Mode.SRC_IN);
                         title.setTextColor(activeColor);
+                        title.setTypeface(lato);
                     }
 
                     @Override
@@ -161,6 +165,7 @@ public class MainActivity extends AppCompatActivity
                         int inactiveColor = ContextCompat.getColor(MainActivity.this, R.color.tabInactive);
                         icon.setColorFilter(inactiveColor, PorterDuff.Mode.SRC_IN);
                         title.setTextColor(inactiveColor);
+                        title.setTypeface(lato);
                     }
 
                     @Override

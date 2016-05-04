@@ -11,20 +11,14 @@
         android:id="@+id/logo_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="center"
         android:src="@drawable/ally_logo"
+        android:maxWidth="315dp"
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp" />
-
-    <TextView
-        android:layout_width="700px"
-        android:layout_height="50px"
-        android:id="@+id/tagline"
-        android:text="Alzheimer's with Autonomy"
-        android:color="#828282"
-        android:layout_below="@+id/logo_image"
-        android:layout_alignStart="@+id/logo_image" />
+        android:layout_marginTop="80dp"
+        android:layout_marginBottom="55dp"/>
 
     <LinearLayout
         android:id="@+id/patients_container"
@@ -40,13 +34,28 @@
     <Button
         android:id="@+id/patient_connect_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="40dp"
-        android:paddingEnd="40dp"
+        android:layout_height="38dp"
+        android:gravity="center"
+        android:paddingLeft="35dp"
+        android:paddingRight="35dp"
         android:textColor="#FFF"
-        android:background="@color/colorPrimary"
+        android:text="Connect with Patient"
+        android:textSize="12dp"
         android:onClick="connectToPatient"
-        android:layout_marginTop="59dp"
+        android:layout_marginTop="30dp"
         android:layout_below="@+id/patients_container"
+        android:background="@drawable/rounded_button"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/add_patient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/secondaryText"
+        android:text="@string/add_patient"
+        android:layout_marginTop="30dp"
+        android:textSize="11dp"
+        android:layout_below="@+id/patient_connect_button"
+        android:layout_centerHorizontal="true"/>
+
 </RelativeLayout>
