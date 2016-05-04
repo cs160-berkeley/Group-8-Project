@@ -1,9 +1,15 @@
 package com.cs160.team8.ally;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -111,11 +117,29 @@ public class PhoneToWatchService extends WearableListenerService implements Goog
         Log.d("WatchMessage", path + ": " + message);
 
         if (path.equalsIgnoreCase(HELP_REQUESTED_PATH)) {
+            System.out.println("Help has been requested!");
+            sendHelpRequestedNotification();
             Intent intent = new Intent(this, PatientLocationActivity.class);
             //you need to add this flag since you're starting a new activity from a service
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }
+    }
+
+    private void sendHelpRequestedNotification() {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        Intent intent = new Intent(getBaseContext(), PatientLocationActivity.class);
+        PendingIntent pIntent = PendingIntent.getActivity(getBaseContext(), 0, intent, 0);
+        android.support.v4.app.NotificationCompat.Builder builder = new NotificationCompat.Builder(getBaseContext())
+                .setTicker("Ally").setContentTitle("Patient requested help!")
+                .setContentText("Your patient has requested help! Open the map to v.")
+                .setSmallIcon(R.drawable.ally_logo)
+                .setContentIntent(pIntent);
+        Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(notificationSound);
+        Notification noti = builder.build();
+        noti.flags = Notification.FLAG_AUTO_CANCEL;
+        notificationManager.notify(0, noti);
     }
 
     public void sendMessage(Context givenContext) {
