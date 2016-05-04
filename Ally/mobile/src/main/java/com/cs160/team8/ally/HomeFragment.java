@@ -88,21 +88,20 @@ public class HomeFragment extends Fragment {
         setUpReminders(inflater);
 
         Button button = (Button) view.findViewById(R.id.message_patient_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                messagePatient();
-            }
-        });
         TextView name = (TextView)  view.findViewById(R.id.patientname);
 
         TextView range = (TextView) view.findViewById(R.id.is_in_range);
-        range.setText(patient.firstName() + " is in the safe zone.");
+        range.setText(patient.firstName() + " is within the safe zone.");
+        range.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PatientLocationActivity.class);
+                startActivity(intent);
+            }
+        });
 
-//        button.setText("Message Patient");
         name.setText(patient.name);
         ImageView photo = (ImageView) view.findViewById(R.id.patient_profile_photo);
         photo.setImageBitmap(patient.getImage());
-        Typeface main_type = Typeface.createFromAsset(getActivity().getAssets(), "Quicksand-Regular.otf");
         Typeface lato = Typeface.createFromAsset(getActivity().getAssets(), "Lato2OFL/Lato-Regular.ttf");
         name.setTypeface(lato);
         button.setTypeface(lato);
@@ -125,14 +124,16 @@ public class HomeFragment extends Fragment {
     }
 
     private void setUpReminders(LayoutInflater inflater) {
-        View medicationReminder = inflater.inflate(R.layout.medication_reminder, null);
+        final View medicationReminder = inflater.inflate(R.layout.medication_reminder, null);
         TextView reminderText = (TextView) medicationReminder.findViewById(R.id.reminder_text);
         TextView remindButton = (TextView) medicationReminder.findViewById(R.id.remind_button);
         TextView dismissButton = (TextView) medicationReminder.findViewById(R.id.dismiss_button);
 
         reminderText.setText(patient.firstName() + " was supposed to take Lipitor 30 minutes ago!");
-        remindButton.setOnClickListener(new View.OnClickListener() {
+        remindButton.setText("REMIND");
+        dismissButton.setText("DISMISS");
 
+        remindButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Send medication reminder to watch
@@ -140,8 +141,12 @@ public class HomeFragment extends Fragment {
                 new PhoneToWatchService().sendMedicationReminder(getContext(),medication);
             }
         });
-        remindButton.setText("REMIND");
-        dismissButton.setText("DISMISS");
+        dismissButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                medicationReminder.setVisibility(View.GONE);
+            }
+        });
 
         reminderText.setTypeface(lato);
         remindButton.setTypeface(lato);
@@ -151,8 +156,8 @@ public class HomeFragment extends Fragment {
     }
 
     private void setUpPatientLocationMap() {
-        double lat = 37.878091;
-        double lon = -122.262124;
+        double lat = 37.8760221;
+        double lon = -122.2609905;
 
         googleMap = mMapView.getMap();
         googleMap.addMarker(new MarkerOptions()
@@ -160,40 +165,11 @@ public class HomeFragment extends Fragment {
                 .title(patient.firstName() + "'s Location")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
 
-        // Move the camera instantly  with a zoom of 15.
+        // Move the camera instantly with a zoom of 15.
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(lat, lon), 15));
 
         // Zoom in, animating the camera.
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
-
-        mMapView.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(getContext(), PatientLocationActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void messagePatient() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_message_patient, null);
-        final EditText messageText = (EditText) view.findViewById(R.id.message_text);
-
-        builder.setView(view)
-                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.d("MessagePatient", messageText.getText().toString());
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.d("MessagePatient", "Message cancelled");
-                    }
-                });
-
-        // Create the AlertDialog object and show it
-        builder.create().show();
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(16), 1000, null);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

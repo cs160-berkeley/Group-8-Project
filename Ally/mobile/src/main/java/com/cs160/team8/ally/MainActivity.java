@@ -90,7 +90,10 @@ public class MainActivity extends AppCompatActivity
         Bundle extras = intent.getExtras();
 
         lato = Typeface.createFromAsset(getAssets(), "Lato2OFL/Lato-Regular.ttf");
-        currentPatient = Patient.findById(Patient.class, extras.getLong(SelectPatientActivity.PATIENT_ID));
+
+        if (extras != null && extras.containsKey(SelectPatientActivity.PATIENT_ID)) {
+            currentPatient = Patient.findById(Patient.class, extras.getLong(SelectPatientActivity.PATIENT_ID));
+        }
         setTitle(currentPatient.name);
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -387,6 +390,27 @@ public class MainActivity extends AppCompatActivity
             }
             return null;
         }
+    }
+
+    public void messagePatient(View v) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = getLayoutInflater().inflate(R.layout.dialog_message_patient, null);
+        final EditText messageText = (EditText) view.findViewById(R.id.message_text);
+
+        builder.setView(view)
+                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("MessagePatient", messageText.getText().toString());
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Log.d("MessagePatient", "Message cancelled");
+                    }
+                });
+
+        // Create the AlertDialog object and show it
+        builder.create().show();
     }
 
     public void onPushProfileInteraction(final Visitor visitor) {
