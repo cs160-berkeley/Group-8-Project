@@ -33,7 +33,7 @@
                 android:textColor="@color/primaryText"
                 />
 
-            <ImageButton
+            <Button
                 android:id="@+id/reminder_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

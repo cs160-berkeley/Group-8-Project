@@ -3,7 +3,9 @@ package com.cs160.team8.ally;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -21,6 +23,7 @@ public class SelectPatientActivity extends AppCompatActivity {
     static final String PATIENT_ID = "selected-patient-id";
     private Patient selectedPatient;
     private Button connectPatientButton;
+    View lastBorder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +32,9 @@ public class SelectPatientActivity extends AppCompatActivity {
 
         Typeface main_type = Typeface.createFromAsset(getAssets(), "Quicksand-Regular.otf");
         Typeface lato = Typeface.createFromAsset(getAssets(), "Lato2OFL/Lato-Regular.ttf");
-        TextView tagline = (TextView) findViewById(R.id.tagline);
+        TextView addProfile = (TextView) findViewById(R.id.add_patient);
+        addProfile.setTypeface(lato);
+
         connectPatientButton = (Button) findViewById(R.id.patient_connect_button);
         connectPatientButton.setTypeface(lato);
         connectPatientButton.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +44,6 @@ public class SelectPatientActivity extends AppCompatActivity {
                 connectToPatient();
             }
         });
-        tagline.setTypeface(main_type);
 
         Patient.deleteAll(Patient.class);
         long numPatients = Patient.count(Patient.class);
@@ -53,6 +57,7 @@ public class SelectPatientActivity extends AppCompatActivity {
         connectPatientButton.setTransformationMethod(null);
 
         Iterator<Patient> patients = Patient.findAll(Patient.class);
+        int i = 0;
         while (patients.hasNext()) {
             final Patient patient = patients.next();
             Log.d("SelectPatient", "Generating option for " + patient.name);
@@ -63,15 +68,27 @@ public class SelectPatientActivity extends AppCompatActivity {
 
             View container = getLayoutInflater().inflate(R.layout.patient_option, null);
 
+            final View border = (View) container.findViewById(R.id.image_border);
             ImageView photo = (ImageView) container.findViewById(R.id.patient_photo);
             photo.setImageBitmap(patient.getImage());
+            if (i == 0) {
+                lastBorder = border;
+                border.setVisibility(View.VISIBLE);
+                i++;
+            }
 
             TextView name = (TextView) container.findViewById(R.id.patient_name);
             name.setText(patient.abbreviatedName());
+            name.setTypeface(lato);
 
             container.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if (border.getVisibility() == View.INVISIBLE) {
+                        lastBorder.setVisibility(View.INVISIBLE);
+                        border.setVisibility(View.VISIBLE);
+                        lastBorder = border;
+                    }
                     selectPatient(patient);
                 }
             });

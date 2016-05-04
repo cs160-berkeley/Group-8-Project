@@ -1,6 +1,7 @@
 package com.cs160.team8.ally;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
 
     private final List<Reminder> mValues;
     private final OnReminderFragmentInteractionListener mListener;
+    private Typeface lato;
 
     public ReminderRecyclerViewAdapter(List<Reminder> items, OnReminderFragmentInteractionListener listener) {
         mValues = items;
@@ -39,7 +41,9 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mTimeView.setText(holder.mItem.getTime());
+        holder.mTimeView.setTypeface(lato);
         holder.mTitleView.setText(holder.mItem.title);
+        holder.mTitleView.setTypeface(lato);
 
         if (holder.mItem.active) {
             holder.mActiveSwitch.setChecked(true);
@@ -93,6 +97,7 @@ public class ReminderRecyclerViewAdapter extends RecyclerView.Adapter<ReminderRe
             mTitleView = (TextView) view.findViewById(R.id.reminder_title);
 
             mActiveSwitch = (Switch) view.findViewById(R.id.reminder_active_switch);
+            lato = Typeface.createFromAsset(view.getContext().getAssets(), "Lato2OFL/Lato-Regular.ttf");
         }
 
         @Override

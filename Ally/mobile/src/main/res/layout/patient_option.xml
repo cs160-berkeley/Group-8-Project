@@ -8,19 +8,36 @@
     android:paddingEnd="25dp"
     >
 
-    <ImageView
-        android:id="@+id/patient_photo"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleType="fitCenter"
-        />
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <View
+            android:id="@+id/image_border"
+            android:layout_width="78dp"
+            android:layout_height="78dp"
+            android:visibility="invisible"
+            android:background="@drawable/image_border"
+            android:layout_gravity="center" />
+
+        <ImageView
+            android:id="@+id/patient_photo"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="fitCenter"
+            android:layout_above="@+id/image_border"
+            android:src="@drawable/sean"
+            android:layout_gravity="center" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/patient_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textColor="#000"
+        android:layout_marginTop="8dp"
+        android:textSize="12dp"
+        android:textColor="@color/primaryText"
         />
 
 </LinearLayout>
