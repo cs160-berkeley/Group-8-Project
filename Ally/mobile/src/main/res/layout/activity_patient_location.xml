@@ -26,11 +26,36 @@
             />
     </android.support.design.widget.AppBarLayout>
 
-    <ImageButton
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:onClick="messagePatient"
-        android:src="@drawable/patient_full_map_screen"
-        />
+        android:layout_height="wrap_content">
+
+        <com.google.android.gms.maps.MapView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/full_map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/is_not_in_range"
+            android:layout_height="35dp"
+            android:layout_width="300dp"
+            android:paddingLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="15dp"
+            android:textColor="@color/primaryText"
+            android:textSize="12dp"
+            android:gravity="center_vertical"
+            android:text="Sean is not within the safe zone!"
+            android:background="@drawable/textbox_border_red" />
+
+    </FrameLayout>
+
+    <!--<ImageButton-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:onClick="messagePatient"-->
+        <!--android:src="@drawable/patient_full_map_screen"-->
+        <!--/>-->
 </LinearLayout>
