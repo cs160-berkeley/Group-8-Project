@@ -1,6 +1,7 @@
 package com.cs160.team8.ally;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import org.apache.commons.lang3.SerializationUtils;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 
@@ -47,6 +49,7 @@ public class PhoneToWatchService extends WearableListenerService implements Goog
     private static final String PROFILE_PATH = "/PROFILE";
     private static final String PROFILE_KEY = "PROFILE_INFO";
     private static final String MEDICATION_REMINDER_PATH = "/MEDICATION_REMINDER";
+    private static final String HELP_REQUESTED_PATH = "/HELP";
 
     public PhoneToWatchService() {
         this.path = "sample";
@@ -102,9 +105,17 @@ public class PhoneToWatchService extends WearableListenerService implements Goog
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         System.out.println("------------------message received by phone------------------------");
-        path = messageEvent.getPath();
-        message = messageEvent.getData();
+        String path = messageEvent.getPath();
+        String message = new String(messageEvent.getData(), StandardCharsets.UTF_8);
 
+        Log.d("WatchMessage", path + ": " + message);
+
+        if (path.equalsIgnoreCase(HELP_REQUESTED_PATH)) {
+            Intent intent = new Intent(this, PatientLocationActivity.class);
+            //you need to add this flag since you're starting a new activity from a service
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
     }
 
     public void sendMessage(Context givenContext) {
