@@ -8,14 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 
 /**
@@ -23,7 +15,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
  */
 public class LocationFragment extends Fragment {
     private View view;
-    GoogleMap googleMap;
 
     private OnFragmentInteractionListener mListener;
     public void onFragmentInteraction(Uri uri){
@@ -50,23 +41,6 @@ public class LocationFragment extends Fragment {
         // TODO Auto-generated method stub
         View v = inflater.inflate(R.layout.fragment_location, container, false);
 
-        double lat = 37.878091;
-        double lon = -122.262124;
-
-        googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapfragment)).getMap();
-
-        MapsInitializer.initialize( v.getContext());
-
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat, lon))
-                .title("Sean's Location")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
-
-        // Move the camera instantly  with a zoom of 15.
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(lat, lon), 15));
-
-        // Zoom in, animating the camera.
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
 
         return v;
 

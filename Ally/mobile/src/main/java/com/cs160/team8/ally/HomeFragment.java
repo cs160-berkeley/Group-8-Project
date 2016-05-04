@@ -17,6 +17,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +38,8 @@ import android.widget.TextView;
 public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    static Patient patient;
+    MapView mMapView;
+    private GoogleMap googleMap;
 
     public void onFragmentInteraction(Uri uri){
 
@@ -46,9 +56,8 @@ public class HomeFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(Patient p) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
-        patient = p;
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -60,7 +69,6 @@ public class HomeFragment extends Fragment {
         if (getArguments() != null) {
             // Retrieve arguments passed in newInstance
         }
-        LinearLayout fragContainer = (LinearLayout) getActivity().findViewById(R.id.mapfragmentcontainer);
 
 //        LinearLayout ll = new LinearLayout(getActivity());
 //        ll.setOrientation(LinearLayout.HORIZONTAL);
@@ -76,6 +84,9 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        Patient patient = ((MainActivity) getActivity()).currentPatient;
+
         Button button = (Button) view.findViewById(R.id.message_patient_button);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -122,8 +133,33 @@ public class HomeFragment extends Fragment {
 //                startActivity(intent);
 //            }
 //        });
-        Fragment loc = new LocationFragment();
-        getChildFragmentManager().beginTransaction().add(R.id.mapfragmentcontainer, loc, "locationfragment").commit();
+
+        double lat = 37.878091;
+        double lon = -122.262124;
+
+        mMapView = (MapView) view.findViewById(R.id.patient_location_map);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        googleMap = mMapView.getMap();
+
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat, lon))
+                .title("Sean's Location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
+
+        // Move the camera instantly  with a zoom of 15.
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(lat, lon), 15));
+
+        // Zoom in, animating the camera.
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
         return view;
     }
 
