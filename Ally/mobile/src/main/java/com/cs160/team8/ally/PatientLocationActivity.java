@@ -14,8 +14,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
 public class PatientLocationActivity extends AppCompatActivity {
 
+    MapView mMapView;
+    private GoogleMap googleMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,8 +39,35 @@ public class PatientLocationActivity extends AppCompatActivity {
 
         // Enable the Up button
         ab.setDisplayHomeAsUpEnabled(true);
+        mMapView = (MapView) findViewById(R.id.full_map);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        setUpPatientLocationMap();
     }
 
+    private void setUpPatientLocationMap() {
+        double lat = 37.8760221;
+        double lon = -122.2609905;
+
+        googleMap = mMapView.getMap();
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat, lon))
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
+
+        // Move the camera instantly with a zoom of 15.
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(lat, lon), 15));
+
+        // Zoom in, animating the camera.
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(16), 1000, null);
+    }
 
     public void messagePatient(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
