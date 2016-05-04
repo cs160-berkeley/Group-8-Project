@@ -7,14 +7,45 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.cs160.team8.ally.LostActivity">
-    <ImageButton
+    tools:context="com.cs160.team8.ally.LostActivity"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Are you lost?"
+        android:textColor="#666666"
+        android:textSize="28sp"
+        android:id="@+id/textView"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
         android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:src="@drawable/lost_screen"
-        android:onClick="goToMainActivity"
-        android:background="@color/white"
-        android:scaleType="centerCrop"
-        android:id="@+id/lost"/>
+        android:layout_height="50dp"
+        android:text="No"
+        android:background="#EB5757"
+        android:id="@+id/No"
+        android:layout_alignParentBottom="true" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+        android:text="Yes"
+        android:background="#9DCB6B"
+        android:id="@+id/Yes"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true" />
+    <!--<ImageButton-->
+        <!--android:layout_width="200dp"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:src="@drawable/lost_screen"-->
+        <!--android:onClick="goToMainActivity"-->
+        <!--android:background="@color/white"-->
+        <!--android:scaleType="centerCrop"-->
+        <!--android:id="@+id/lost"-->
+        <!--android:layout_alignBottom="@+id/button"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginBottom="31dp" />-->
 
 </RelativeLayout>
