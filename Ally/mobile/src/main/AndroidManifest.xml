@@ -49,7 +49,9 @@
         <!-- Listeners are special services that need to be declared like below, as BIND_LISTENER -->
         <activity
             android:name=".CreateReminderActivity"
-            android:parentActivityName=".MainActivity" />
+            android:label="New Reminder"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SelectPatientActivity"
             android:theme="@style/AppTheme.NoActionBar">
