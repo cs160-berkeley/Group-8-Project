@@ -1,6 +1,7 @@
 package com.cs160.team8.ally;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
