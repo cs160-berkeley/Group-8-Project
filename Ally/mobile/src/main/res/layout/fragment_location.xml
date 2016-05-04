@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.cs160.team8.ally.LocationFragment">
+
     <fragment
         android:id="@+id/mapfragment"
         android:layout_width="match_parent"

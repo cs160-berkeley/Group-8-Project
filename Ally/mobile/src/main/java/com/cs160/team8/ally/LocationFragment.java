@@ -3,13 +3,16 @@ package com.cs160.team8.ally;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -22,9 +25,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
  *Create a map fragment on the home screen
  */
 public class LocationFragment extends Fragment {
-    private View view;
+    private static View view;
     GoogleMap googleMap;
-
+    private static View v;
     private OnFragmentInteractionListener mListener;
     public void onFragmentInteraction(Uri uri){
 
@@ -48,26 +51,34 @@ public class LocationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // TODO Auto-generated method stub
-        View v = inflater.inflate(R.layout.fragment_location, container, false);
+        if (v==null) {
+            v = inflater.inflate(R.layout.fragment_location, container, false);
+        }
 
+        System.out.println(v);
         double lat = 37.878091;
         double lon = -122.262124;
+        System.out.println(getChildFragmentManager().findFragmentById((R.id.mapfragment)));
+        if (getChildFragmentManager().findFragmentById((R.id.mapfragment)) != null) {
+            googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapfragment)).getMap();
 
-        googleMap = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.mapfragment)).getMap();
+            MapsInitializer.initialize( v.getContext());
 
-        MapsInitializer.initialize( v.getContext());
+            googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(lat, lon))
+                    .title("Sean's Location")
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
 
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(lat, lon))
-                .title("Sean's Location")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
+            // Move the camera instantly  with a zoom of 15.
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(lat, lon), 15));
 
-        // Move the camera instantly  with a zoom of 15.
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(lat, lon), 15));
+            // Zoom in, animating the camera.
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
+        }
 
-        // Zoom in, animating the camera.
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
-
+        if (v.getParent() != null) {
+            ((ViewGroup)v.getParent()).removeView(v);
+        }
         return v;
 
     }
@@ -102,5 +113,15 @@ public class LocationFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
+//    public void onDestroyView() {
+//        super.onDestroyView();
+//        FragmentMa
+//        FragmentManager fm = getActivity().getSupportFragmentManager();
+//        Fragment fragment = (fm.findFragmentById(R.id.mapfragment));
+//        FragmentTransaction ft = fm.beginTransaction();
+//        ft.remove(fragment);
+//        ft.commit();
+//    }
 
    }
