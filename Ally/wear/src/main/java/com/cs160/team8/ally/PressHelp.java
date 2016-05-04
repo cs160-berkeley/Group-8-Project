@@ -84,6 +84,10 @@ public class PressHelp extends Activity {
                             circ_one.setVisibility(View.GONE);
                             circ_two.setVisibility(View.GONE);
                             help_text.setText("Help is on the way!");
+
+                            Intent sendIntent = new Intent(getBaseContext(), WatchToPhoneService.class);
+                            sendIntent.putExtra("path", WatchToPhoneService.REQUEST_HELP_PATH);
+                            startService(sendIntent);
                         }
                     };
                     count.start();

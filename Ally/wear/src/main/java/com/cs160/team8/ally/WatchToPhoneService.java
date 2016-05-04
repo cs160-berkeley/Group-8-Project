@@ -30,6 +30,7 @@ public class WatchToPhoneService extends WearableListenerService implements Goog
     private GoogleApiClient mWatchApiClient;
     private List<Node> nodes = new ArrayList<>();
     private static final String PROFILE_PATH = "/PROFILE";
+    static final String REQUEST_HELP_PATH = "/HELP";
     static final String PROFILE_KEY = "PROFILE_INFO";
 
 
@@ -89,9 +90,8 @@ public class WatchToPhoneService extends WearableListenerService implements Goog
 
                     String path = extras.getString("path");
 
-                    if (path.equals("/show_details")) {
-                        String name = extras.getString("name");
-                        sendMessage(path, name);
+                    if (path.equals(REQUEST_HELP_PATH)) {
+                        sendMessage(path, "Help needed");
                     } else if (path.equals("/randomize_location")) {
                         sendMessage(path, path);
                     }
@@ -126,8 +126,6 @@ public class WatchToPhoneService extends WearableListenerService implements Goog
             }
         }).start();
     }
-
-
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
