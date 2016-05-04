@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,9 +22,17 @@ public class WaitOne extends Activity {
         wait1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(WaitOne.this, FoundHelp.class);
-                startActivity(intent);
+                Handler handle = new Handler();
+                handle.postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Intent intent = new Intent(WaitOne.this, FoundHelp.class);
+                        startActivity(intent);
+                    }
+                }, 1000);
             }
-        });
+            });
     }
 }
+

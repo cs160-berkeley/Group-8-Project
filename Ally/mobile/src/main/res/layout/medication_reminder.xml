@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".HomeFragment"
+    android:layout_width="325dp"
+    android:layout_height="wrap_content"
+    android:backgroundTint="#fbebeb"
+    android:layout_marginTop="25dp"
+    android:background="@drawable/rounded_button"
+    android:padding="10dp"
+    android:id="@+id/relativeLayout">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/reminder_text"
+        android:text="Sean was supposed to take Lipitor 30 minutes ago!"
+        android:textColor="@color/primaryText"
+        android:textSize="14dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/reminder_text"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:paddingRight="12dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/remind_button"
+            android:textSize="14dp"
+            android:text="REMIND"
+            android:layout_marginRight="32dp"
+            android:textColor="#219653"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/dismiss_button"
+            android:textSize="14dp"
+            android:text="DISMISS"
+            android:textColor="#EB5757"
+            />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -2,6 +2,7 @@ package com.cs160.team8.ally;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -38,8 +39,11 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    Patient patient;
     MapView mMapView;
     private GoogleMap googleMap;
+    LinearLayout remindersContainer;
+    Typeface lato;
 
     public void onFragmentInteraction(Uri uri){
 
@@ -69,14 +73,6 @@ public class HomeFragment extends Fragment {
         if (getArguments() != null) {
             // Retrieve arguments passed in newInstance
         }
-
-//        LinearLayout ll = new LinearLayout(getActivity());
-//        ll.setOrientation(LinearLayout.HORIZONTAL);
-//
-//        ll.setId(1);
-
-
-//        fragContainer.addView(ll);
     }
 
     @Override
@@ -85,7 +81,11 @@ public class HomeFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Patient patient = ((MainActivity) getActivity()).currentPatient;
+        patient = ((MainActivity) getActivity()).currentPatient;
+        lato = Typeface.createFromAsset(getActivity().getAssets(), "Lato2OFL/Lato-Regular.ttf");
+
+        remindersContainer = (LinearLayout) view.findViewById(R.id.patient_reminders_container);
+        setUpReminders(inflater);
 
         Button button = (Button) view.findViewById(R.id.message_patient_button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -94,27 +94,11 @@ public class HomeFragment extends Fragment {
             }
         });
         TextView name = (TextView)  view.findViewById(R.id.patientname);
-        TextView reminder = (TextView) view.findViewById(R.id.pillreminder);
-
-        TextView remind = (TextView) view.findViewById(R.id.remind);
-        TextView dismiss = (TextView) view.findViewById(R.id.dismiss);
-        remind.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                // Send medication reminder to watch
-                Medication medication = new Medication("Lipitor", 1);
-                new PhoneToWatchService().sendMedicationReminder(getContext(),medication);
-            }
-        });
-        remind.setText("REMIND");
-        dismiss.setText("DISMISS");
 
         TextView range = (TextView) view.findViewById(R.id.is_in_range);
-        range.setText(patient.name + " is in the safe zone.");
-        reminder.setText(patient.name + " was supposed to take their Lipitor 30 minutes ago!");
+        range.setText(patient.firstName() + " is in the safe zone.");
 
-        button.setText("Message Patient");
+//        button.setText("Message Patient");
         name.setText(patient.name);
         ImageView photo = (ImageView) view.findViewById(R.id.patient_profile_photo);
         photo.setImageBitmap(patient.getImage());
@@ -122,20 +106,7 @@ public class HomeFragment extends Fragment {
         Typeface lato = Typeface.createFromAsset(getActivity().getAssets(), "Lato2OFL/Lato-Regular.ttf");
         name.setTypeface(lato);
         button.setTypeface(lato);
-        reminder.setTypeface(lato);
-        dismiss.setTypeface(lato);
-        remind.setTypeface(lato);
         range.setTypeface(lato);
-//        ImageButton mapButton = (ImageButton) view.findViewById(R.id.patient_location_screen);
-//        mapButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getContext(), PatientLocationActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-
-        double lat = 37.878091;
-        double lon = -122.262124;
 
         mMapView = (MapView) view.findViewById(R.id.patient_location_map);
         mMapView.onCreate(savedInstanceState);
@@ -148,11 +119,45 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-        googleMap = mMapView.getMap();
+        setUpPatientLocationMap();
 
+        return view;
+    }
+
+    private void setUpReminders(LayoutInflater inflater) {
+        View medicationReminder = inflater.inflate(R.layout.medication_reminder, null);
+        TextView reminderText = (TextView) medicationReminder.findViewById(R.id.reminder_text);
+        TextView remindButton = (TextView) medicationReminder.findViewById(R.id.remind_button);
+        TextView dismissButton = (TextView) medicationReminder.findViewById(R.id.dismiss_button);
+
+        reminderText.setText(patient.firstName() + " was supposed to take Lipitor 30 minutes ago!");
+        remindButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // Send medication reminder to watch
+                Medication medication = new Medication("Lipitor", 1);
+                new PhoneToWatchService().sendMedicationReminder(getContext(),medication);
+            }
+        });
+        remindButton.setText("REMIND");
+        dismissButton.setText("DISMISS");
+
+        reminderText.setTypeface(lato);
+        remindButton.setTypeface(lato);
+        dismissButton.setTypeface(lato);
+
+        remindersContainer.addView(medicationReminder);
+    }
+
+    private void setUpPatientLocationMap() {
+        double lat = 37.878091;
+        double lon = -122.262124;
+
+        googleMap = mMapView.getMap();
         googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(lat, lon))
-                .title("Sean's Location")
+                .title(patient.firstName() + "'s Location")
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
 
         // Move the camera instantly  with a zoom of 15.
@@ -160,7 +165,13 @@ public class HomeFragment extends Fragment {
 
         // Zoom in, animating the camera.
         googleMap.animateCamera(CameraUpdateFactory.zoomTo(12), 1000, null);
-        return view;
+
+        mMapView.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), PatientLocationActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void messagePatient() {

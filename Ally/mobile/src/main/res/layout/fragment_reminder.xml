@@ -4,8 +4,8 @@
     android:layout_height="wrap_content"
     android:paddingTop="20dp"
     android:paddingBottom="20dp"
-    android:paddingStart="15dp"
-    android:paddingEnd="15dp"
+    android:paddingStart="20dp"
+    android:paddingEnd="20dp"
     android:background="@drawable/reminder_bottom_border"
     >
 
@@ -15,8 +15,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:textColor="#000"
-        android:textSize="30sp"
+        android:textColor="@color/primaryText"
+        android:textSize="28dp"
+        android:text="2:30 PM"
         />
 
     <TextView
@@ -24,8 +25,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_marginTop="5dp"
         android:layout_below="@+id/reminder_time"
-        android:textSize="18sp"
+        android:textColor="@color/secondaryText"
+        android:textSize="15dp"
+        android:text="Take a heart pill"
         />
 
     <Switch
