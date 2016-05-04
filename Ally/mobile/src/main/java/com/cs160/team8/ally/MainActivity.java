@@ -48,7 +48,7 @@ import java.util.TimerTask;
 public class MainActivity extends AppCompatActivity
         implements ProfilesFragment.OnProfileFragmentInteractionListener,
         HomeFragment.OnFragmentInteractionListener,
-        RemindersFragment.OnFragmentInteractionListener {
+        ReminderFragment.OnReminderFragmentInteractionListener {
 
     Patient currentPatient;
 
@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity
                 case 1:
                     return ProfilesFragment.newInstance(1);
                 case 2:
-                    return RemindersFragment.newInstance();
+                    return ReminderFragment.newInstance(1);
             }
             return HomeFragment.newInstance(currentPatient);
         }
@@ -416,16 +416,20 @@ public class MainActivity extends AppCompatActivity
         builder.create().show();
     }
 
-    private void displayNotification(String msg) {
-        Snackbar.make(MainActivity.this.findViewById(android.R.id.content),
-                msg, Snackbar.LENGTH_SHORT).show();
+    public void onEditProfileInteraction(Visitor visitor) {
+
     }
 
-    public void onEditProfileInteraction(Visitor visitor) {
+    public void onReminderFragmentInteraction(Reminder reminder) {
 
     }
 
     public void onFragmentInteraction(Uri uri){
 
+    }
+
+    private void displayNotification(String msg) {
+        Snackbar.make(MainActivity.this.findViewById(android.R.id.content),
+                msg, Snackbar.LENGTH_SHORT).show();
     }
 }
