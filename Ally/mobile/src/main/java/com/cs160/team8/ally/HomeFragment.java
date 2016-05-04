@@ -2,6 +2,7 @@ package com.cs160.team8.ally;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +18,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,7 +39,11 @@ import android.widget.TextView;
 public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-    static Patient patient;
+    Patient patient;
+    MapView mMapView;
+    private GoogleMap googleMap;
+    LinearLayout remindersContainer;
+    Typeface lato;
 
     public void onFragmentInteraction(Uri uri){
 
@@ -46,9 +60,8 @@ public class HomeFragment extends Fragment {
      * @return A new instance of fragment HomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(Patient p) {
+    public static HomeFragment newInstance() {
         HomeFragment fragment = new HomeFragment();
-        patient = p;
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -60,15 +73,6 @@ public class HomeFragment extends Fragment {
         if (getArguments() != null) {
             // Retrieve arguments passed in newInstance
         }
-        LinearLayout fragContainer = (LinearLayout) getActivity().findViewById(R.id.mapfragmentcontainer);
-
-//        LinearLayout ll = new LinearLayout(getActivity());
-//        ll.setOrientation(LinearLayout.HORIZONTAL);
-//
-//        ll.setId(1);
-
-
-//        fragContainer.addView(ll);
     }
 
     @Override
@@ -76,19 +80,60 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        patient = ((MainActivity) getActivity()).currentPatient;
+        lato = Typeface.createFromAsset(getActivity().getAssets(), "Lato2OFL/Lato-Regular.ttf");
+
+        remindersContainer = (LinearLayout) view.findViewById(R.id.patient_reminders_container);
+        setUpReminders(inflater);
+
         Button button = (Button) view.findViewById(R.id.message_patient_button);
-        button.setOnClickListener(new View.OnClickListener() {
+        TextView name = (TextView)  view.findViewById(R.id.patientname);
+
+        TextView range = (TextView) view.findViewById(R.id.is_in_range);
+        range.setText(patient.firstName() + " is within the safe zone.");
+        range.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                messagePatient();
+                Intent intent = new Intent(getContext(), PatientLocationActivity.class);
+                startActivity(intent);
             }
         });
-        TextView name = (TextView)  view.findViewById(R.id.patientname);
-        TextView reminder = (TextView) view.findViewById(R.id.pillreminder);
 
-        TextView remind = (TextView) view.findViewById(R.id.remind);
-        TextView dismiss = (TextView) view.findViewById(R.id.dismiss);
-        remind.setOnClickListener(new View.OnClickListener() {
+        name.setText(patient.name);
+        ImageView photo = (ImageView) view.findViewById(R.id.patient_profile_photo);
+        photo.setImageBitmap(patient.getImage());
+        Typeface lato = Typeface.createFromAsset(getActivity().getAssets(), "Lato2OFL/Lato-Regular.ttf");
+        name.setTypeface(lato);
+        button.setTypeface(lato);
+        range.setTypeface(lato);
 
+        mMapView = (MapView) view.findViewById(R.id.patient_location_map);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        setUpPatientLocationMap();
+
+        return view;
+    }
+
+    private void setUpReminders(LayoutInflater inflater) {
+        final View medicationReminder = inflater.inflate(R.layout.medication_reminder, null);
+        TextView reminderText = (TextView) medicationReminder.findViewById(R.id.reminder_text);
+        TextView remindButton = (TextView) medicationReminder.findViewById(R.id.remind_button);
+        TextView dismissButton = (TextView) medicationReminder.findViewById(R.id.dismiss_button);
+
+        reminderText.setText(patient.firstName() + " was supposed to take Lipitor 30 minutes ago!");
+        remindButton.setText("REMIND");
+        dismissButton.setText("DISMISS");
+
+        remindButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Send medication reminder to watch
@@ -96,57 +141,35 @@ public class HomeFragment extends Fragment {
                 new PhoneToWatchService().sendMedicationReminder(getContext(),medication);
             }
         });
-        remind.setText("REMIND");
-        dismiss.setText("DISMISS");
+        dismissButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                medicationReminder.setVisibility(View.GONE);
+            }
+        });
 
-        TextView range = (TextView) view.findViewById(R.id.is_in_range);
-        range.setText(patient.name + " is in the safe zone.");
-        reminder.setText(patient.name + " was supposed to take Lipitor 30 minutes ago!");
+        reminderText.setTypeface(lato);
+        remindButton.setTypeface(lato);
+        dismissButton.setTypeface(lato);
 
-//        button.setText("Message Patient");
-        name.setText(patient.name);
-        ImageView photo = (ImageView) view.findViewById(R.id.patient_profile_photo);
-        photo.setImageBitmap(patient.getImage());
-        Typeface main_type = Typeface.createFromAsset(getActivity().getAssets(), "Quicksand-Regular.otf");
-        Typeface lato = Typeface.createFromAsset(getActivity().getAssets(), "Lato2OFL/Lato-Regular.ttf");
-        name.setTypeface(lato);
-        button.setTypeface(lato);
-        reminder.setTypeface(lato);
-        dismiss.setTypeface(lato);
-        remind.setTypeface(lato);
-        range.setTypeface(lato);
-//        ImageButton mapButton = (ImageButton) view.findViewById(R.id.patient_location_screen);
-//        mapButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(getContext(), PatientLocationActivity.class);
-//                startActivity(intent);
-//            }
-//        });
-        Fragment loc = new LocationFragment();
-        getChildFragmentManager().beginTransaction().add(R.id.mapfragmentcontainer, loc, "locationfragment").commit();
-        return view;
+        remindersContainer.addView(medicationReminder);
     }
 
-    private void messagePatient() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_message_patient, null);
-        final EditText messageText = (EditText) view.findViewById(R.id.message_text);
+    private void setUpPatientLocationMap() {
+        double lat = 37.8760221;
+        double lon = -122.2609905;
 
-        builder.setView(view)
-                .setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.d("MessagePatient", messageText.getText().toString());
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.d("MessagePatient", "Message cancelled");
-                    }
-                });
+        googleMap = mMapView.getMap();
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(lat, lon))
+                .title(patient.firstName() + "'s Location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
 
-        // Create the AlertDialog object and show it
-        builder.create().show();
+        // Move the camera instantly with a zoom of 15.
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom( new LatLng(lat, lon), 15));
+
+        // Zoom in, animating the camera.
+        googleMap.animateCamera(CameraUpdateFactory.zoomTo(16), 1000, null);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
