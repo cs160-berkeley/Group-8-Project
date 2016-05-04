@@ -140,6 +140,7 @@ public class PhoneToWatchService extends WearableListenerService implements Goog
         Notification noti = builder.build();
         noti.flags = Notification.FLAG_AUTO_CANCEL;
         notificationManager.notify(0, noti);
+        
     }
 
     public void sendMessage(Context givenContext) {
